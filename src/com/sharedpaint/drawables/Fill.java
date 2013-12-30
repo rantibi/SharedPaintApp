@@ -31,37 +31,23 @@ public class Fill extends AbsrtractDrawable {
 		}
 	}
 
-	
-	
 	private void fill(Bitmap bitmap, int x, int y, int startPointColor,
 			int fillColor) {
-		float[][] mat = new float[bitmap.getWidth()][bitmap.getHeight()];
-		
-		for (int i = 0; i < bitmap.getWidth(); i++) {
-			for (int j = 0; j < bitmap.getHeight(); j++) {
-				mat[i][j] = bitmap.getPixel(i, j); 
-			}
-		}
-		
-		fill(mat, x, y, startPointColor, fillColor);
+		if (bitmap.getPixel(x, y) != startPointColor)
+			return;
 
-		
-	}
+		bitmap.setPixel(x, y, fillColor);
+		points.add((float) x);
+		points.add((float) y);
 
-
-
-	private void fill(float[][] mat, int x, int y, int startPointColor,
-			int fillColor) {
-		mat[x][y] = fillColor;
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				if (x + i >= 0 && x + i <= mat.length && y + j >= 0
-						&& y + j <= mat[0].length
-						&& mat[x + i][y + j] == startPointColor) {
-					fill(mat, x + i, y + j, startPointColor, fillColor);
-				}
-			}
-		}
+		if (x - 1 > 0 && y - 1 > 0)
+			fill(bitmap, x - 1, y - 1, startPointColor, fillColor);
+		if (x - 1 > 0 && y + 1 < bitmap.getHeight())
+			fill(bitmap, x - 1, y + 1, startPointColor, fillColor);
+		if (x + 1 < bitmap.getWidth() && y - 1 > 0)
+			fill(bitmap, x + 1, y - 1, startPointColor, fillColor);
+		if (x + 1 < bitmap.getWidth() && y + 1 < bitmap.getHeight())
+			fill(bitmap, x + 1, y + 1, startPointColor, fillColor);
 	}
 
 	/*
