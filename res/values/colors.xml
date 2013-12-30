@@ -20,4 +20,6 @@
 <resources>
     <color name="pressed_example">#AABBC5E5</color>
     <color name="actionbar_text">#AB000000</color>
+    <color name="tab1_bg">#FFCCAA12</color>
+    <color name="tab2_bg">#bbAA14FF</color>
 </resources>

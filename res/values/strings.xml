@@ -2,13 +2,19 @@
 <resources>
 
     <string name="app_name">My First App</string>
-    <string name="edit_message">Enter a message</string>
-    <string name="button_send">Send</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_display_message">My Message</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_search">search here</string>
-    <string name="tab1">Tab1</string>
-	<string name="tab2">Tab2</string>
+    <string name="title_draw_board">Draw Board</string>
+    <string name="rect">rect</string>
+    <string name="pencil">pencil</string>
+    <string name="line">line</string>
+    <string name="triangle">triangle</string>
+    <string name="text">text</string>
+    <string name="circle">circle</string>
+    <string name="action_settings">settings</string>
+    <string name="cancel">cancel</string>
+    <string name="stroke_and_fill">s_f</string>
+    <string name="stroke">s</string>
+    <string name="fill">f</string> 
+    
+    
+
 </resources>
