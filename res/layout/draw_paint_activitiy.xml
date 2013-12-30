@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.sharedpaint.DrawView
+        android:id="@+id/draw_view"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:id="@+id/paint_menu"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/selected_shape_button"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:onClick="onSelectedShapeClick"
+            android:text="@string/pencil" />
+
+        <SeekBar
+            android:id="@+id/stroke_width_seek_bar"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:progress="10" />
+
+        <Button
+            android:id="@+id/selected_style_button"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:onClick="onSelecedStyleButtonClick"
+            android:text="@string/stroke" />
+        
+        <Button
+            android:id="@+id/selected_color_button"
+            style="@style/selected_color_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/selected_color_button"
+            android:onClick="onSelecedColorClick"
+            android:text="" />
+    </LinearLayout>
+
+    <com.sharedpaint.views.ColorPickerView
+        android:id="@+id/paint_color_picker_view"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:visibility="gone" />
+
+    <HorizontalScrollView
+        android:id="@+id/style_scrool_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/select_style_stroke"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onStyleSelectedClick"
+                android:tag="STROKE"
+                android:text="@string/stroke" />
+
+            <Button
+                android:id="@+id/select_style_stroke_and_fill"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onStyleSelectedClick"
+                android:tag="FILL_AND_STROKE"
+                android:text="@string/stroke_and_fill" />
+        <Button
+                android:id="@+id/select_style_fill"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onStyleSelectedClick"
+                android:tag="FILL"
+                android:text="@string/fill" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:id="@+id/shape_scrool_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal"
+        android:visibility="gone" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/select_shape_pencil"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onShapeChooseClick"
+                android:tag="com.sharedpaint.drawables.Pencil"
+                android:text="@string/pencil" />
+
+            <Button
+                android:id="@+id/select_shape_line"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onShapeChooseClick"
+                android:tag="com.sharedpaint.drawables.Line"
+                android:text="@string/line" />
+
+            <Button
+                android:id="@+id/select_shape_fill"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onShapeChooseClick"
+                android:tag="com.sharedpaint.drawables.Fill"
+                android:text="@string/fill" />
+            
+            <Button
+                android:id="@+id/select_shape_rectangle"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onShapeChooseClick"
+                android:tag="com.sharedpaint.drawables.Rect"
+                android:text="@string/rect" />
+
+            <Button
+                android:id="@+id/select_shape_circle"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onShapeChooseClick"
+                android:tag="com.sharedpaint.drawables.Circle"
+                android:text="@string/circle" />
+
+            <Button
+                android:id="@+id/select_shape_triangle"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onShapeChooseClick"
+                android:tag="com.sharedpaint.drawables.Triangle"
+                android:text="@string/triangle" />
+
+            <Button
+                android:id="@+id/select_shape_text"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onShapeChooseClick"
+                android:tag="com.sharedpaint.drawables.Text"
+                android:text="@string/text" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>
