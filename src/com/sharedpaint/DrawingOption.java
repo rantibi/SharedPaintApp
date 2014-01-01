@@ -11,24 +11,30 @@ import com.sharedpaint.operations.FillDrawingOperation;
 import com.sharedpaint.operations.MultiPositionsOperation;
 import com.sharedpaint.operations.StartEndPositionOperation;
 import com.sharedpaint.operations.TextDrawingOperation;
-
+import com.example.myfirstapp.R;
 public enum DrawingOption {
 
-	PENCIL(new MultiPositionsOperation(Pencil.class)),
-	LINE (new StartEndPositionOperation(Line.class)),
-	CIRCLE(new StartEndPositionOperation(Circle.class)),
-	RECTANGLE(new StartEndPositionOperation(Rectangle.class)),
-	TRIANGLE(new StartEndPositionOperation(Triangle.class)),
-	TEXT(new TextDrawingOperation()),
-	FILL(new FillDrawingOperation());
+	PENCIL(R.drawable.pencil, new MultiPositionsOperation(Pencil.class)),
+	LINE (R.drawable.line, new StartEndPositionOperation(Line.class)),
+	CIRCLE(R.drawable.circle, new StartEndPositionOperation(Circle.class)),
+	RECTANGLE(R.drawable.rectangle, new StartEndPositionOperation(Rectangle.class)),
+	TRIANGLE(R.drawable.triangle, new StartEndPositionOperation(Triangle.class)),
+	TEXT(R.drawable.text, new TextDrawingOperation()),
+	FILL(R.drawable.fill, new FillDrawingOperation());
 
 	private DrawingOptionOperation drawingOperation;
+	private int iconResource;
 	
-	private DrawingOption(DrawingOptionOperation drawingOperation){
+	private DrawingOption(int iconResource, DrawingOptionOperation drawingOperation){
+		this.iconResource = iconResource;
 		this.drawingOperation = drawingOperation;
 	}
 	
 	public DrawingOptionOperation getDrawingOperation(){
 		return drawingOperation;
+	}
+
+	public int getIconResource() {
+		return iconResource;
 	}
 }

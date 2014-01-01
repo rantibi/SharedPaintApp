@@ -58,9 +58,10 @@ public class TextDrawingOperation extends AbsrtcatDrawaingOptionOperation {
 
 	@Override
 	public void onDeselect(View view, DrawManager drawManager) {
-		state = State.NEW_TEXT;
-
-		drawManager.acceptCurrentDrawable();
+		if (state == State.TEXT_ADDED){
+			drawManager.acceptCurrentDrawable();
+			state = State.NEW_TEXT;
+		}
 	}
 
 	private enum State {

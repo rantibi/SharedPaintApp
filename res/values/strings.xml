@@ -3,7 +3,7 @@
 
     <string name="app_name">My First App</string>
     <string name="title_draw_board">Draw Board</string>
-    <string name="rect">rect</string>
+    <string name="rectangle">rect</string>
     <string name="pencil">pencil</string>
     <string name="line">line</string>
     <string name="triangle">triangle</string>
@@ -16,5 +16,6 @@
     <string name="type_your_text">Type Your Text</string>
     <string name="undo">undo</string>
     <string name="redo">redo</string>
+    <string name="select_drawing_option">Select drawing option</string>
 
 </resources>

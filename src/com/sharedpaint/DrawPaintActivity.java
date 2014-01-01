@@ -1,22 +1,21 @@
 package com.sharedpaint;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.example.myfirstapp.R;
-import com.sharedpaint.drawables.Drawable;
-import com.sharedpaint.drawables.Pencil;
 import com.sharedpaint.views.ColorPickerView;
 import com.sharedpaint.views.ColorPickerView.OnColorChangedListener;
 
@@ -27,7 +26,7 @@ public class DrawPaintActivity extends FragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// Create a GLSurfaceView instance and set it
 		// as the ContentView for this Activity.
 		drawManager = new DrawManager();
@@ -62,19 +61,37 @@ public class DrawPaintActivity extends FragmentActivity {
 		strokeWidthseekBar
 				.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
+					private ShowStrokeWidthDialogFragment strokeWidthDialog;
+
 					@Override
 					public void onStopTrackingTouch(SeekBar seekBar) {
 						drawManager.getPaint().setStrokeWidth(
 								seekBar.getProgress() + 1);
+						strokeWidthDialog.dismiss();
 					}
 
 					@Override
 					public void onStartTrackingTouch(SeekBar seekBar) {
+						if (strokeWidthDialog == null) {
+							strokeWidthDialog = ShowStrokeWidthDialogFragment.newInstance(
+									drawManager.getPaint().getColor(),
+									drawManager.getPaint());
+						}
+						strokeWidthDialog.show(getSupportFragmentManager(),
+								"show_stroke_width");
+					
 					}
 
 					@Override
 					public void onProgressChanged(SeekBar seekBar,
 							int progress, boolean fromUser) {
+						StrokeWidthView strokeWidthView = strokeWidthDialog
+								.getStrokeWidthView();
+						if (strokeWidthView != null) {
+							strokeWidthView.setStrokeWidth(seekBar
+									.getProgress() + 1);
+							strokeWidthView.invalidate();
+						}
 					}
 				});
 
@@ -82,8 +99,7 @@ public class DrawPaintActivity extends FragmentActivity {
 	}
 
 	private void setDefaultValues() {
-		setSelectedDrawingOption(DrawingOption.PENCIL,
-				getResources().getText(R.string.pencil));
+		setSelectedDrawingOption(DrawingOption.PENCIL);
 		setPaintColor(Color.BLUE);
 		setPaintStrokeWidth(10);
 		setPaintStyle(Style.STROKE, getResources().getText(R.string.stroke));
@@ -113,7 +129,7 @@ public class DrawPaintActivity extends FragmentActivity {
 		case R.id.action_redo_selected:
 			drawManager.redolLastDrawable();
 			drawView.invalidate();
-		
+
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -126,31 +142,31 @@ public class DrawPaintActivity extends FragmentActivity {
 				.getCurrent()).setColor(color);
 	}
 
-	public void onTextDrawingOptionSelected(View view){
+	public void onTextDrawingOptionSelected(View view) {
 		onDrawingOptionSelected(view);
-		
+
 	}
-	
+
 	public void onDrawingOptionSelected(View view) {
-		DrawingOption.valueOf((String) view.getTag()).getDrawingOperation().onSelect(drawView, drawManager);
-		setSelectedDrawingOption(DrawingOption.valueOf((String) view.getTag()),
-				((Button) view).getText());
+		DrawingOption.valueOf((String) view.getTag()).getDrawingOperation()
+				.onSelect(drawView, drawManager);
+		setSelectedDrawingOption(DrawingOption.valueOf((String) view.getTag()));
 		View shapeScroolView = findViewById(R.id.draw_option_scrool_view);
 		shapeScroolView.setVisibility(View.GONE);
 	}
 
-	private void setSelectedDrawingOption(DrawingOption drawableOption,
-			CharSequence text) {
+	private void setSelectedDrawingOption(DrawingOption drawableOption) {
 		DrawingOption lastDrowingOption = drawManager.getDrowingOption();
-		
-		if (lastDrowingOption != null){
-			lastDrowingOption.getDrawingOperation().onDeselect(drawView, drawManager);
+
+		if (lastDrowingOption != null) {
+			lastDrowingOption.getDrawingOperation().onDeselect(drawView,
+					drawManager);
 		}
-		
+
 		drawManager.setCurrentDrawingOption(drawableOption);
 		drawableOption.getDrawingOperation().onSelect(drawView, drawManager);
-		Button selectedDrawingOption = (Button) findViewById(R.id.selected_draw_option_button);
-		selectedDrawingOption.setText(text);
+		ImageButton selectedDrawingOption = (ImageButton) findViewById(R.id.selected_draw_option_button);
+		selectedDrawingOption.setImageResource(drawableOption.getIconResource());
 	}
 
 	public void onSelectColorClick(View view) {

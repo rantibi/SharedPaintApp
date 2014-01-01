@@ -16,12 +16,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <Button
+        <ImageButton
             android:id="@+id/selected_draw_option_button"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
+            style="?android:attr/borderlessButtonStyle"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/select_drawing_option"
             android:onClick="onSelecteDrawOptionClick"
-            android:text="@string/pencil" />
+            android:padding="10dp"
+            android:src="@drawable/pencil" />
 
         <SeekBar
             android:id="@+id/stroke_width_seek_bar"
@@ -106,68 +110,89 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <Button
-                android:id="@+id/select_shape_text"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onTextDrawingOptionSelected"
-                android:tag="TEXT"
-                android:text="@string/text" />
-
-            <Button
+            <ImageButton
                 android:id="@+id/select_shape_pencil"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/pencil"
                 android:onClick="onDrawingOptionSelected"
-                android:tag="PENCIL"
-                android:text="@string/pencil" />
+                android:padding="10dp"
+                android:src="@drawable/pencil"
+                android:tag="PENCIL" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/select_shape_line"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/line"
                 android:onClick="onDrawingOptionSelected"
-                android:tag="LINE"
-                android:text="@string/line" />
+                android:padding="10dp"
+                android:src="@drawable/line"
+                android:tag="LINE" />
 
-            <Button
-                android:id="@+id/select_shape_fill"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onDrawingOptionSelected"
-                android:tag="FILL"
-                android:text="@string/fill" />
-
-            <Button
+            <ImageButton
                 android:id="@+id/select_shape_rectangle"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/rectangle"
                 android:onClick="onDrawingOptionSelected"
-                android:tag="RECTANGLE"
-                android:text="@string/rect" />
+                android:padding="10dp"
+                android:src="@drawable/rectangle"
+                android:tag="RECTANGLE" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/select_shape_circle"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/circle"
                 android:onClick="onDrawingOptionSelected"
-                android:tag="CIRCLE"
-                android:text="@string/circle" />
+                android:padding="10dp"
+                android:src="@drawable/circle"
+                android:tag="CIRCLE" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/select_shape_triangle"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/triangle"
                 android:onClick="onDrawingOptionSelected"
-                android:tag="TRIANGLE"
-                android:text="@string/triangle" />
+                android:padding="10dp"
+                android:src="@drawable/triangle"
+                android:tag="TRIANGLE" />
+
+            <ImageButton
+                android:id="@+id/select_shape_fill"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/fill"
+                android:onClick="onDrawingOptionSelected"
+                android:padding="10dp"
+                android:src="@drawable/fill"
+                android:tag="FILL" />
+
+            <ImageButton
+                android:id="@+id/select_shape_text"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/text"
+                android:onClick="onTextDrawingOptionSelected"
+                android:padding="10dp"
+                android:src="@drawable/text"
+                android:tag="TEXT" />
         </LinearLayout>
     </HorizontalScrollView>
 
