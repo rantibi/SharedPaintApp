@@ -5,11 +5,11 @@ import android.graphics.Paint;
 import android.view.View;
 
 
-public class Line extends AbsrtractDrawable{
+public class Line extends AbsrtractStartEndPositionDrawable{
 
 	@Override
-	public void draw(View view, Canvas canvas) {
-		canvas.drawLine(startX, startY, EndX, EndY, paint);
+	public void draw(Canvas canvas) {
+		canvas.drawLine(startX, startY, endX, endY, paint);
 	}
 
 }

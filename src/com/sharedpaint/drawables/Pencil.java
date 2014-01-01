@@ -7,8 +7,9 @@ import android.graphics.Path;
 import android.view.View;
 
 
-public class Pencil extends AbsrtractDrawable{
+public class Pencil implements MultiPositionsDrawable{
 	Path path;
+	private Paint paint;
 	
 	public Pencil() {
 		path = new Path();
@@ -16,24 +17,22 @@ public class Pencil extends AbsrtractDrawable{
 	
 	@Override
 	public void setPaint(Paint paint) {
-		super.setPaint(paint);
-		paint.setStyle(Style.STROKE);
+		this.paint = paint;
+		this.paint.setStyle(Style.STROKE);
 	}
 	
 	@Override
-	public void draw(View view, Canvas canvas) {
+	public void draw(Canvas canvas) {
 		canvas.drawPath(path, paint);
 	}
 
-	@Override
-	public void setStartPosition(float x, float y) {
-		path.moveTo(x, y);
+	public void addPosition(float x, float y) {
+		if (path.isEmpty()){
+			path.moveTo(x, y);
+		}
+		
 		path.lineTo(x, y);
 	}
 
-	@Override
-	public void updateEndPosition(float x, float y) {
-		path.lineTo(x, y);
-	}
 
 }

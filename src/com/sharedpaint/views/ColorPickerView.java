@@ -6,6 +6,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -101,20 +103,25 @@ public class ColorPickerView extends View {
 		}
 
 		float xCurrentColor = strokeWidth / 2 + currentColor * strokeWidth;
+	
+		drawColorPointer(canvas, xCurrentColor);
+	}
 
+	private void drawColorPointer(Canvas canvas, float colorXPosition) {
+		Path pointerPath = new Path();
+		pointerPath.moveTo(colorXPosition, (float) canvas.getHeight() / 5 + 3);
+		pointerPath.lineTo(colorXPosition - 23, 0);
+		pointerPath.lineTo(colorXPosition + 23, 0);
+		pointerPath.lineTo(colorXPosition, (float) canvas.getHeight() / 5 + 3);
 		
-		triangle.setStartPosition(xCurrentColor,
-				(float) canvas.getHeight() / 5 + 3);
-		triangle.updateEndPosition(xCurrentColor - 23, 0);
-		triangle.setColor(Color.WHITE);
-		triangle.setStyle(Paint.Style.FILL_AND_STROKE);
-		triangle.draw(this, canvas);
-		triangle.setStartPosition(xCurrentColor, (float) canvas.getHeight() / 5);
-		triangle.updateEndPosition(xCurrentColor - 20, 0);
-		triangle.setColor(Color.BLACK);
-		triangle.setStyle(Paint.Style.FILL_AND_STROKE);
-		triangle.draw(this, canvas);
-
+		Paint pointerPaint = new Paint();
+		pointerPaint.setStrokeWidth(2);
+		pointerPaint.setColor(Color.BLACK);
+		pointerPaint.setStyle(Style.FILL);
+		canvas.drawPath(pointerPath, pointerPaint);
+		pointerPaint.setColor(Color.WHITE);
+		pointerPaint.setStyle(Style.STROKE);
+		canvas.drawPath(pointerPath, pointerPaint);
 	}
 
 	/*

@@ -5,8 +5,13 @@
         android:showAsAction="never"
         android:title="@string/action_settings"/>
    	<item
-        android:id="@+id/action_cancel_selected"
+        android:id="@+id/action_undo_selected"
         android:orderInCategory="106"
         android:showAsAction="ifRoom"
-        android:title="@string/cancel"/>
+        android:title="@string/undo"/>
+   		<item
+        android:id="@+id/action_redo_selected"
+        android:orderInCategory="107"
+        android:showAsAction="ifRoom"
+        android:title="@string/redo"/>
 </menu>

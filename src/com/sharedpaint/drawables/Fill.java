@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
+import android.app.ActionBar.LayoutParams;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -11,27 +12,35 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.View;
 
-public class Fill extends AbsrtractDrawable {
+public class Fill extends AbsrtractStartEndPositionDrawable {
 
-	private LinkedList<Float> points;
+	// private LinkedList<Float> points;
 	private Bitmap bitmap;
+
 
 	
 	@Override
-	public void draw(View view, Canvas canvas) {
+	public void draw(Canvas canvas) {
 		if (bitmap == null) {
-			points = new LinkedList<Float>();
-			Bitmap bitmapCopy = Bitmap.createBitmap(view.getDrawingCache());
-			bitmap = fill(bitmapCopy, (int) EndX, (int) EndY,
-					bitmapCopy.getPixel((int) EndX, (int) EndY), paint.getColor());
+			
+			QueueLinearFloodFiller floodFiller = new QueueLinearFloodFiller(
+					bitmap,bitmap.getPixel(
+							(int) endX, (int) endY), paint.getColor());
+			floodFiller.setTolerance(10);
+			bitmap = floodFiller.floodFill((int)endX, (int)endY);
+			
+			
+			// Bitmap bitmapCopy = Bitmap.createBitmap(view.getDrawingCache());
+			// bitmap = fill(bitmapCopy, (int) EndX, (int) EndY,
+			// bitmapCopy.getPixel((int) EndX, (int) EndY), paint.getColor());
 		} else {
-			/*float[] pts = new float[points.size()];
-
-			for (int i = 0; i < pts.length; i++) {
-				pts[i] = points.get(i);
-			}
-
-			canvas.drawPoints(pts, paint);*/
+			/*
+			 * float[] pts = new float[points.size()];
+			 * 
+			 * for (int i = 0; i < pts.length; i++) { pts[i] = points.get(i); }
+			 * 
+			 * canvas.drawPoints(pts, paint);
+			 */
 			canvas.drawBitmap(bitmap, 0, 0, paint);
 		}
 	}
@@ -58,8 +67,9 @@ public class Fill extends AbsrtractDrawable {
 		if (bitmap.getPixel(x, y) != startPointColor)
 			return null;
 
-		Bitmap returnBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
-		
+		Bitmap returnBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+				bitmap.getHeight(), bitmap.getConfig());
+
 		queue.add(new MyPoint(x, y));
 
 		while (!queue.isEmpty()) {
@@ -80,31 +90,31 @@ public class Fill extends AbsrtractDrawable {
 				for (int i = east; i <= west; i++) {
 					bitmap.setPixel(i, n.y, fillColor);
 					returnBitmap.setPixel(i, n.y, fillColor);
-					//points.add((float) i);
-					//points.add((float) n.y);
+					// points.add((float) i);
+					// points.add((float) n.y);
 
 					if (y - 1 >= 0
 							&& bitmap.getPixel(i, n.y - 1) == startPointColor) {
 						MyPoint myPoint = new MyPoint(i, n.y - 1);
-						
-						if (!queue.contains(myPoint)){
+
+						if (!queue.contains(myPoint)) {
 							queue.add(myPoint);
 						}
 					}
 
 					if (y + 1 < bitmap.getHeight()
 							&& bitmap.getPixel(i, n.y + 1) == startPointColor) {
-						
+
 						MyPoint myPoint = new MyPoint(i, n.y + 1);
-						
-						if (!queue.contains(myPoint)){
+
+						if (!queue.contains(myPoint)) {
 							queue.add(myPoint);
 						}
 					}
 				}
 			}
 		}
-		
+
 		return returnBitmap;
 	}
 
@@ -155,17 +165,18 @@ public class Fill extends AbsrtractDrawable {
 		super.setPaint(paint);
 		paint.setStrokeWidth(1);
 	}
-	
-	class MyPoint extends Point{
-		
+
+	class MyPoint extends Point {
+
 		public MyPoint(int x, int y) {
-			super(x, y)	;
+			super(x, y);
 		}
-		
+
 		@Override
 		public boolean equals(Object o) {
-			return ((MyPoint)o).x == x && ((MyPoint)o).y == y;
+			return ((MyPoint) o).x == x && ((MyPoint) o).y == y;
 		}
 	}
+	
+	
 }
-

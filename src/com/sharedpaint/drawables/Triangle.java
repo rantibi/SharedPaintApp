@@ -6,24 +6,16 @@ import android.graphics.Path;
 import android.view.View;
 
 
-public class Triangle extends AbsrtractDrawable{
+public class Triangle extends AbsrtractStartEndPositionDrawable{
 
 	@Override
-	public void draw(View view, Canvas canvas) {
-		/*float headX = startX + (EndX - startX)/2;
+	public void draw(Canvas canvas) {
+		float headX = startX + (endX - startX)/2;
 		float headY = startY;
 		float leftX = startX;
-		float leftY = EndY;
-		float rightX = EndX;
-		float rigthY = EndY;
-		*/
-		
-		float headX = startX;
-		float headY = startY;
-		float leftX = startX - (EndX - startX) /2;
-		float leftY = EndY;
-		float rightX = startX + (EndX - startX) /2;
-		float rigthY = EndY;
+		float leftY = endY;
+		float rightX = endX;
+		float rigthY = endY;
 		
 		Path path = new Path();
 		path.moveTo(headX, headY);

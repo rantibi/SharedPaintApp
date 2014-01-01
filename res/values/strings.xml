@@ -10,11 +10,11 @@
     <string name="text">text</string>
     <string name="circle">circle</string>
     <string name="action_settings">settings</string>
-    <string name="cancel">cancel</string>
     <string name="stroke_and_fill">s_f</string>
     <string name="stroke">s</string>
-    <string name="fill">f</string> 
-    
-    
+    <string name="fill">f</string>
+    <string name="type_your_text">Type Your Text</string>
+    <string name="undo">undo</string>
+    <string name="redo">redo</string>
 
 </resources>

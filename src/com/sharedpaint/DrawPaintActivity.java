@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,18 +20,17 @@ import com.sharedpaint.drawables.Pencil;
 import com.sharedpaint.views.ColorPickerView;
 import com.sharedpaint.views.ColorPickerView.OnColorChangedListener;
 
-public class DrawPaintActivity extends Activity {
+public class DrawPaintActivity extends FragmentActivity {
 	private DrawView drawView;
-	private DrawManger drawManager;
-	private Menu menu;
+	private DrawManager drawManager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		// Create a GLSurfaceView instance and set it
 		// as the ContentView for this Activity.
-		drawManager = new DrawManger();
+		drawManager = new DrawManager();
 		/*
 		 * drawView = new DrawView(this); drawView.setDrawManager(drawManager);
 		 * /*SeekBar seekBar = new SeekBar(this); LinearLayout layout = new
@@ -65,20 +64,17 @@ public class DrawPaintActivity extends Activity {
 
 					@Override
 					public void onStopTrackingTouch(SeekBar seekBar) {
-						drawManager.setStrokeWidth(seekBar.getProgress() + 1);
+						drawManager.getPaint().setStrokeWidth(
+								seekBar.getProgress() + 1);
 					}
 
 					@Override
 					public void onStartTrackingTouch(SeekBar seekBar) {
-						// TODO Auto-generated method stub
-
 					}
 
 					@Override
 					public void onProgressChanged(SeekBar seekBar,
 							int progress, boolean fromUser) {
-						// TODO Auto-generated method stub
-
 					}
 				});
 
@@ -86,7 +82,8 @@ public class DrawPaintActivity extends Activity {
 	}
 
 	private void setDefaultValues() {
-		setSelectedShape(Pencil.class, getResources().getText(R.string.pencil));
+		setSelectedDrawingOption(DrawingOption.PENCIL,
+				getResources().getText(R.string.pencil));
 		setPaintColor(Color.BLUE);
 		setPaintStrokeWidth(10);
 		setPaintStyle(Style.STROKE, getResources().getText(R.string.stroke));
@@ -95,14 +92,13 @@ public class DrawPaintActivity extends Activity {
 	private void setPaintStrokeWidth(int strokeWidth) {
 		SeekBar strokeWidthSeekBar = (SeekBar) findViewById(R.id.stroke_width_seek_bar);
 		strokeWidthSeekBar.setProgress(strokeWidth);
-		drawManager.setStrokeWidth(strokeWidth);
+		drawManager.getPaint().setStrokeWidth(strokeWidth);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.open_gles20, menu);
-		this.menu = menu;
+		getMenuInflater().inflate(R.menu.darw_paint_activitiy_menu, menu);
 		return true;
 	}
 
@@ -110,73 +106,79 @@ public class DrawPaintActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
-		case R.id.action_cancel_selected:
-			drawManager.cancelLastDrawable();
+		case R.id.action_undo_selected:
+			drawManager.undolLastDrawable();
 			drawView.invalidate();
 			return true;
+		case R.id.action_redo_selected:
+			drawManager.redolLastDrawable();
+			drawView.invalidate();
+		
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
 	private void setPaintColor(int color) {
-		drawManager.setColor(color);
+		drawManager.getPaint().setColor(color);
 		Button colorButton = (Button) findViewById(R.id.selected_color_button);
 		((GradientDrawable) ((StateListDrawable) colorButton.getBackground())
 				.getCurrent()).setColor(color);
 	}
-	
-	public void onFillShapeSelectedClick(View view) {
+
+	public void onTextDrawingOptionSelected(View view){
+		onDrawingOptionSelected(view);
 		
 	}
-
-	public void onShapeChooseClick(View view) {
-		try {
-			setSelectedShape(
-					(Class<? extends Drawable>) Class.forName((String) ((Button) view)
-							.getTag()), ((Button) view).getText());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		View shapeScroolView = findViewById(R.id.shape_scrool_view);
+	
+	public void onDrawingOptionSelected(View view) {
+		DrawingOption.valueOf((String) view.getTag()).getDrawingOperation().onSelect(drawView, drawManager);
+		setSelectedDrawingOption(DrawingOption.valueOf((String) view.getTag()),
+				((Button) view).getText());
+		View shapeScroolView = findViewById(R.id.draw_option_scrool_view);
 		shapeScroolView.setVisibility(View.GONE);
 	}
 
-	private void setSelectedShape(Class<? extends Drawable> drawable,
+	private void setSelectedDrawingOption(DrawingOption drawableOption,
 			CharSequence text) {
-		drawManager.setDrawbleClass(drawable);
-		Button selectedShape = (Button) findViewById(R.id.selected_shape_button);
-		selectedShape.setText(text);
+		DrawingOption lastDrowingOption = drawManager.getDrowingOption();
+		
+		if (lastDrowingOption != null){
+			lastDrowingOption.getDrawingOperation().onDeselect(drawView, drawManager);
+		}
+		
+		drawManager.setCurrentDrawingOption(drawableOption);
+		drawableOption.getDrawingOperation().onSelect(drawView, drawManager);
+		Button selectedDrawingOption = (Button) findViewById(R.id.selected_draw_option_button);
+		selectedDrawingOption.setText(text);
 	}
 
-	public void onSelecedColorClick(View view) {
+	public void onSelectColorClick(View view) {
 		View shapeScroolView = findViewById(R.id.paint_color_picker_view);
 		shapeScroolView.setVisibility(View.VISIBLE);
 
 	}
 
-	public void onSelectedShapeClick(View view) {
-		View shapeScroolView = findViewById(R.id.shape_scrool_view);
+	public void onSelecteDrawOptionClick(View view) {
+		View shapeScroolView = findViewById(R.id.draw_option_scrool_view);
 		shapeScroolView.setVisibility(View.VISIBLE);
 	}
 
-	public void onSelecedStyleButtonClick(View view) {
+	public void onSelecetStyleButtonClick(View view) {
 		View shapeScroolView = findViewById(R.id.style_scrool_view);
 		shapeScroolView.setVisibility(View.VISIBLE);
 	}
-	
-	
+
 	public void onStyleSelectedClick(View view) {
-		setPaintStyle(Style.valueOf((String) view.getTag()), ((Button)view).getText());
+		setPaintStyle(Style.valueOf((String) view.getTag()),
+				((Button) view).getText());
 		View shapeScroolView = findViewById(R.id.style_scrool_view);
 		shapeScroolView.setVisibility(View.GONE);
 
 	}
 
 	private void setPaintStyle(Style style, CharSequence buttonText) {
-		drawManager.setStyle(style);
+		drawManager.getPaint().setStyle(style);
 		Button selectedShape = (Button) findViewById(R.id.selected_style_button);
 		selectedShape.setText(buttonText);
 	}

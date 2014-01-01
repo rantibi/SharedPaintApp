@@ -17,10 +17,10 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/selected_shape_button"
+            android:id="@+id/selected_draw_option_button"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:onClick="onSelectedShapeClick"
+            android:onClick="onSelecteDrawOptionClick"
             android:text="@string/pencil" />
 
         <SeekBar
@@ -34,16 +34,16 @@
             android:id="@+id/selected_style_button"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:onClick="onSelecedStyleButtonClick"
+            android:onClick="onSelecetStyleButtonClick"
             android:text="@string/stroke" />
-        
+
         <Button
             android:id="@+id/selected_color_button"
             style="@style/selected_color_button"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/selected_color_button"
-            android:onClick="onSelecedColorClick"
+            android:onClick="onSelectColorClick"
             android:text="" />
     </LinearLayout>
 
@@ -82,7 +82,8 @@
                 android:onClick="onStyleSelectedClick"
                 android:tag="FILL_AND_STROKE"
                 android:text="@string/stroke_and_fill" />
-        <Button
+
+            <Button
                 android:id="@+id/select_style_fill"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
@@ -94,7 +95,7 @@
     </HorizontalScrollView>
 
     <HorizontalScrollView
-        android:id="@+id/shape_scrool_view"
+        android:id="@+id/draw_option_scrool_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:scrollbars="horizontal"
@@ -106,12 +107,21 @@
             android:orientation="horizontal" >
 
             <Button
+                android:id="@+id/select_shape_text"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onTextDrawingOptionSelected"
+                android:tag="TEXT"
+                android:text="@string/text" />
+
+            <Button
                 android:id="@+id/select_shape_pencil"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onShapeChooseClick"
-                android:tag="com.sharedpaint.drawables.Pencil"
+                android:onClick="onDrawingOptionSelected"
+                android:tag="PENCIL"
                 android:text="@string/pencil" />
 
             <Button
@@ -119,8 +129,8 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onShapeChooseClick"
-                android:tag="com.sharedpaint.drawables.Line"
+                android:onClick="onDrawingOptionSelected"
+                android:tag="LINE"
                 android:text="@string/line" />
 
             <Button
@@ -128,17 +138,17 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onShapeChooseClick"
-                android:tag="com.sharedpaint.drawables.Fill"
+                android:onClick="onDrawingOptionSelected"
+                android:tag="FILL"
                 android:text="@string/fill" />
-            
+
             <Button
                 android:id="@+id/select_shape_rectangle"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onShapeChooseClick"
-                android:tag="com.sharedpaint.drawables.Rect"
+                android:onClick="onDrawingOptionSelected"
+                android:tag="RECTANGLE"
                 android:text="@string/rect" />
 
             <Button
@@ -146,8 +156,8 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onShapeChooseClick"
-                android:tag="com.sharedpaint.drawables.Circle"
+                android:onClick="onDrawingOptionSelected"
+                android:tag="CIRCLE"
                 android:text="@string/circle" />
 
             <Button
@@ -155,18 +165,9 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onShapeChooseClick"
-                android:tag="com.sharedpaint.drawables.Triangle"
+                android:onClick="onDrawingOptionSelected"
+                android:tag="TRIANGLE"
                 android:text="@string/triangle" />
-
-            <Button
-                android:id="@+id/select_shape_text"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onShapeChooseClick"
-                android:tag="com.sharedpaint.drawables.Text"
-                android:text="@string/text" />
         </LinearLayout>
     </HorizontalScrollView>
 

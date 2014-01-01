@@ -5,12 +5,12 @@ import android.graphics.Canvas;
 import android.view.View;
 
 
-public class Circle extends AbsrtractDrawable{
+public class Circle extends AbsrtractStartEndPositionDrawable{
 
 	@Override
-	public void draw(View view, Canvas canvas) {
+	public void draw(Canvas canvas) {
 
-		float radius = (float)Math.sqrt(Math.pow(startX-EndX, 2) + Math.pow(startY-EndY, 2));
+		float radius = (float)Math.sqrt(Math.pow(startX-endX, 2) + Math.pow(startY-endY, 2));
 		canvas.drawCircle(startX, startY, radius, paint);
 	}
 
