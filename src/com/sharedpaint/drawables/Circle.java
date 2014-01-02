@@ -2,10 +2,12 @@ package com.sharedpaint.drawables;
 
 
 import android.graphics.Canvas;
-import android.view.View;
 
 
 public class Circle extends AbsrtractStartEndPositionDrawable{
+
+	
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void draw(Canvas canvas) {

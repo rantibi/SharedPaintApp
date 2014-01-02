@@ -21,11 +21,11 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:adjustViewBounds="true"
             android:contentDescription="@string/select_drawing_option"
             android:onClick="onSelecteDrawOptionClick"
-            android:padding="10dp"
-            android:src="@drawable/pencil" />
+            android:src="@drawable/pencil" 
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
 
         <ImageButton
             android:id="@+id/selected_style_button"
@@ -35,8 +35,8 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/select_style"
             android:onClick="onSelecetStyleButtonClick"
-            android:padding="10dp"
-            android:src="@drawable/stroke_style" />
+            android:src="@drawable/stroke_style" 
+            android:scaleType="fitCenter"/>
 
         <SeekBar
             android:id="@+id/stroke_width_seek_bar"
@@ -48,8 +48,8 @@
         <Button
             android:id="@+id/selected_color_button"
             style="@style/selected_color_button"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@drawable/selected_color_button"
             android:onClick="onSelectColorClick"
             android:text="" />

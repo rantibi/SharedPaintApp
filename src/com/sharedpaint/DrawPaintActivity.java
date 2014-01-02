@@ -19,26 +19,42 @@ import com.sharedpaint.views.ColorPickerView;
 import com.sharedpaint.views.ColorPickerView.OnColorChangedListener;
 
 public class DrawPaintActivity extends FragmentActivity {
+	private static final String DRAW_MANAGER = "DRAW_MANAGER";
 	private DrawView drawView;
 	private DrawManager drawManager;
 
 	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putSerializable(DRAW_MANAGER, drawManager);
+	
+	}
+	
+	
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		// Create a GLSurfaceView instance and set it
-		// as the ContentView for this Activity.
-		drawManager = new DrawManager();
-		/*
-		 * drawView = new DrawView(this); drawView.setDrawManager(drawManager);
-		 * /*SeekBar seekBar = new SeekBar(this); LinearLayout layout = new
-		 * LinearLayout(this); layout.addView(seekBar);
-		 * layout.addView(drawView);
-		 */
 		setContentView(R.layout.draw_paint_activitiy);
+		
+		if (savedInstanceState == null){
+			drawManager = new DrawManager();
+			setDefaultValues();
+		}else{
+			drawManager = (DrawManager) savedInstanceState.getSerializable(DRAW_MANAGER);
+			setSelectedDrawingOption(drawManager.getDrowingOption());
+			setPaintColor(drawManager.getPaint().getColor(), true);
+			setPaintStrokeWidth(drawManager.getPaint().getStrokeWidth());
+			setPaintStyle(drawManager.getPaint().getStyle());
+		}
+		
 		drawView = (DrawView) findViewById(R.id.draw_view);
 		drawView.setDrawManager(drawManager);
+		addColorPickerView();
+		addStokeWidthListener();
+	}
 
+
+	private void addColorPickerView() {
 		ColorPickerView colorPickerView = (ColorPickerView) findViewById(R.id.paint_color_picker_view);
 		colorPickerView.setOnColorChangedListener(new OnColorChangedListener() {
 
@@ -50,12 +66,14 @@ public class DrawPaintActivity extends FragmentActivity {
 			@Override
 			public void colorSelected(int color) {
 				colorSelecting(color);
-				View shapeScroolView = findViewById(R.id.paint_color_picker_view);
-				shapeScroolView.setVisibility(View.GONE);
+				hideAllExtraMenusBar();
 			}
 
 		});
+	}
 
+
+	private void addStokeWidthListener() {
 		SeekBar strokeWidthseekBar = (SeekBar) findViewById(R.id.stroke_width_seek_bar);
 		strokeWidthseekBar
 				.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -66,7 +84,9 @@ public class DrawPaintActivity extends FragmentActivity {
 					public void onStopTrackingTouch(SeekBar seekBar) {
 						drawManager.getPaint().setStrokeWidth(
 								seekBar.getProgress() + 1);
-						strokeWidthDialog.dismiss();
+						if (strokeWidthDialog != null) {
+							strokeWidthDialog.dismiss();
+						}
 					}
 
 					@Override
@@ -84,17 +104,18 @@ public class DrawPaintActivity extends FragmentActivity {
 					@Override
 					public void onProgressChanged(SeekBar seekBar,
 							int progress, boolean fromUser) {
-						StrokeWidthView strokeWidthView = strokeWidthDialog
-								.getStrokeWidthView();
-						if (strokeWidthView != null) {
-							strokeWidthView.setStrokeWidth(seekBar
-									.getProgress() + 1);
-							strokeWidthView.invalidate();
+						if (strokeWidthDialog != null) {
+							StrokeWidthView strokeWidthView = strokeWidthDialog
+									.getStrokeWidthView();
+						
+							if (strokeWidthView != null) {
+								strokeWidthView.setStrokeWidth(seekBar
+										.getProgress() + 1);
+								strokeWidthView.invalidate();
+							}
 						}
 					}
 				});
-
-		setDefaultValues();
 	}
 
 	private void setDefaultValues() {
@@ -104,9 +125,9 @@ public class DrawPaintActivity extends FragmentActivity {
 		setPaintStyle(Style.STROKE);
 	}
 
-	private void setPaintStrokeWidth(int strokeWidth) {
+	private void setPaintStrokeWidth(float strokeWidth) {
 		SeekBar strokeWidthSeekBar = (SeekBar) findViewById(R.id.stroke_width_seek_bar);
-		strokeWidthSeekBar.setProgress(strokeWidth);
+		strokeWidthSeekBar.setProgress((int) strokeWidth);
 		drawManager.getPaint().setStrokeWidth(strokeWidth);
 	}
 
@@ -135,11 +156,11 @@ public class DrawPaintActivity extends FragmentActivity {
 	}
 
 	private void setPaintColor(int color, boolean updatePiker) {
-		if (updatePiker){
+		if (updatePiker) {
 			ColorPickerView colorPickerView = (ColorPickerView) findViewById(R.id.paint_color_picker_view);
 			colorPickerView.setColor(color);
 		}
-		
+
 		drawManager.getPaint().setColor(color);
 		Button colorButton = (Button) findViewById(R.id.selected_color_button);
 		((GradientDrawable) ((StateListDrawable) colorButton.getBackground())
@@ -155,8 +176,7 @@ public class DrawPaintActivity extends FragmentActivity {
 		DrawingOption.valueOf((String) view.getTag()).getDrawingOperation()
 				.onSelect(drawView, drawManager);
 		setSelectedDrawingOption(DrawingOption.valueOf((String) view.getTag()));
-		View shapeScroolView = findViewById(R.id.draw_option_scrool_view);
-		shapeScroolView.setVisibility(View.GONE);
+		hideAllExtraMenusBar();
 	}
 
 	private void setSelectedDrawingOption(DrawingOption drawableOption) {
@@ -175,25 +195,42 @@ public class DrawPaintActivity extends FragmentActivity {
 	}
 
 	public void onSelectColorClick(View view) {
-		View shapeScroolView = findViewById(R.id.paint_color_picker_view);
-		shapeScroolView.setVisibility(View.VISIBLE);
+		hideAllExtraMenusBar();
+		showMenuBar(R.id.paint_color_picker_view);
 
 	}
 
 	public void onSelecteDrawOptionClick(View view) {
-		View shapeScroolView = findViewById(R.id.draw_option_scrool_view);
-		shapeScroolView.setVisibility(View.VISIBLE);
+		hideAllExtraMenusBar();
+		showMenuBar(R.id.draw_option_scrool_view);
 	}
 
 	public void onSelecetStyleButtonClick(View view) {
-		View shapeScroolView = findViewById(R.id.style_scrool_view);
-		shapeScroolView.setVisibility(View.VISIBLE);
+		hideAllExtraMenusBar();
+		showMenuBar(R.id.style_scrool_view);
 	}
 
 	public void onStyleSelectedClick(View view) {
 		setPaintStyle(Style.valueOf((String) view.getTag()));
-		View shapeScroolView = findViewById(R.id.style_scrool_view);
-		shapeScroolView.setVisibility(View.GONE);
+		hideAllExtraMenusBar();
+	}
+
+	public void showMenuBar(int id) {
+		View view = findViewById(id);
+		view.setVisibility(View.VISIBLE);
+
+	}
+
+	public void hideAllExtraMenusBar() {
+		int[] menuBarsId = { R.id.draw_option_scrool_view,
+				R.id.paint_color_picker_view, R.id.style_scrool_view };
+
+		for (int id : menuBarsId) {
+			View view = findViewById(id);
+			if (view.getVisibility() != View.GONE) {
+				view.setVisibility(View.GONE);
+			}
+		}
 	}
 
 	private void setPaintStyle(Style style) {

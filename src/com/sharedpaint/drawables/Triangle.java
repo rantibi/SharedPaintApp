@@ -1,12 +1,11 @@
 package com.sharedpaint.drawables;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Path;
-import android.view.View;
 
 
 public class Triangle extends AbsrtractStartEndPositionDrawable{
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void draw(Canvas canvas) {
@@ -18,6 +17,7 @@ public class Triangle extends AbsrtractStartEndPositionDrawable{
 		float rigthY = endY;
 		
 		Path path = new Path();
+		path.setFillType(Path.FillType.INVERSE_WINDING);
 		path.moveTo(headX, headY);
 		path.lineTo(leftX, leftY);
 		path.lineTo(rightX, rigthY);

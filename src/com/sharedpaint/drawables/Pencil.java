@@ -1,18 +1,23 @@
 package com.sharedpaint.drawables;
 
+import java.io.IOException;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.Path;
-import android.view.View;
+
+import com.sharedpaint.serializables.SerializablePaint;
+import com.sharedpaint.serializables.SerializablePath;
 
 
 public class Pencil implements MultiPositionsDrawable{
-	Path path;
-	private Paint paint;
+	
+	private static final long serialVersionUID = 1L;
+	private SerializablePath path;
+	private transient Paint paint;
 	
 	public Pencil() {
-		path = new Path();
+		path = new SerializablePath();
 	}
 	
 	@Override
@@ -32,6 +37,17 @@ public class Pencil implements MultiPositionsDrawable{
 		}
 		
 		path.lineTo(x, y);
+	}
+	
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+		out.writeObject(new SerializablePaint(paint));
+	}
+
+	private void readObject(java.io.ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+		in.defaultReadObject();
+		paint = ((SerializablePaint)in.readObject()).getPaint();
 	}
 
 

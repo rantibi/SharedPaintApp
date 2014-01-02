@@ -1,14 +1,18 @@
 package com.sharedpaint.drawables;
 
+import java.io.IOException;
+
+import com.sharedpaint.serializables.SerializablePaint;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
 public class Text implements Drawable{
-
+	private static final long serialVersionUID = 1L;
 	private String text;
 	private float x;
 	private float y;
-	private Paint paint;
+	private transient Paint paint;
 
 	@Override
 	public void draw(Canvas canvas) {
@@ -29,4 +33,14 @@ public class Text implements Drawable{
 		this.text = text;
 	}
 
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+		out.writeObject(new SerializablePaint(paint));
+	}
+
+	private void readObject(java.io.ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+		in.defaultReadObject();
+		paint = ((SerializablePaint)in.readObject()).getPaint();
+	}
 }

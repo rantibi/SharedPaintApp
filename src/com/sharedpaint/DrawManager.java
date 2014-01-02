@@ -1,5 +1,7 @@
 package com.sharedpaint;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -9,51 +11,56 @@ import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 
 import com.sharedpaint.drawables.Drawable;
+import com.sharedpaint.serializables.SerializablePaint;
 
-
-public class DrawManager {
+public class DrawManager implements Serializable {
+	private static final long serialVersionUID = 1L;
 	List<Drawable> drawables;
 	Stack<Drawable> redoDrawables;
 	private Drawable currentDrawable;
-	private Paint paint;
-	private DrawingOption drowingOption;
-	
+	private transient Paint paint;
+	private transient DrawingOption drowingOption;
+
 	public DrawManager() {
 		drawables = new LinkedList<Drawable>();
 		redoDrawables = new Stack<Drawable>();
-		paint = new Paint();
-        paint.setAntiAlias(false);
-        paint.setDither(false);
-        paint.setStrokeCap(Cap.ROUND);
-        paint.setStrokeJoin(Paint.Join.ROUND);
+		createPaint();
 	}
-	
-	public void draw(DrawView drawView, Canvas canvas){
+
+	private void createPaint() {
+		paint = new Paint();
+		paint.setAntiAlias(true);
+		paint.setDither(false);
+		paint.setStrokeCap(Cap.ROUND);
+		paint.setStrokeJoin(Paint.Join.ROUND);
+	}
+
+	public void draw(DrawView drawView, Canvas canvas) {
 		canvas.drawColor(0xFFFCCCCF);
-   	 
+
 		for (Drawable drawable : drawables) {
 			drawable.draw(canvas);
 		}
-		
-		if (currentDrawable != null){
+
+		if (currentDrawable != null) {
 			currentDrawable.draw(canvas);
 		}
 	}
-		
-	public void acceptCurrentDrawable(){
+
+	public void acceptCurrentDrawable() {
 		drawables.add(currentDrawable);
 		currentDrawable = null;
 		redoDrawables.clear();
 	}
-	
+
 	public void undolLastDrawable() {
-		if (!drawables.isEmpty()){
+		if (!drawables.isEmpty()) {
 			redoDrawables.push(drawables.remove(drawables.size() - 1));
 		}
 	}
-	
+
 	public void redolLastDrawable() {
-		if (!redoDrawables.isEmpty()){
+		if (!redoDrawables.isEmpty()) {
 			drawables.add(redoDrawables.pop());
 		}
 	}
@@ -73,6 +80,18 @@ public class DrawManager {
 	public DrawingOption getDrowingOption() {
 		return drowingOption;
 	}
-	
-	
+
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+		out.writeObject(new SerializablePaint(paint));
+		out.writeObject(drowingOption.name());
+	}
+
+	private void readObject(java.io.ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
+		in.defaultReadObject();
+		paint = ((SerializablePaint)in.readObject()).getPaint();
+		drowingOption = DrawingOption.valueOf((String) in.readObject());
+	}
+
 }

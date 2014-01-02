@@ -1,18 +1,17 @@
 package com.sharedpaint;
 
-import com.example.myfirstapp.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+
+import com.example.myfirstapp.R;
 
 public class ShowStrokeWidthDialogFragment extends DialogFragment {
 
