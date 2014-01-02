@@ -5,7 +5,6 @@ import android.graphics.Paint.Style;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +44,7 @@ public class DrawPaintActivity extends FragmentActivity {
 
 			@Override
 			public void colorSelecting(int color) {
-				setPaintColor(color);
+				setPaintColor(color, false);
 			}
 
 			@Override
@@ -79,7 +78,7 @@ public class DrawPaintActivity extends FragmentActivity {
 						}
 						strokeWidthDialog.show(getSupportFragmentManager(),
 								"show_stroke_width");
-					
+
 					}
 
 					@Override
@@ -100,9 +99,9 @@ public class DrawPaintActivity extends FragmentActivity {
 
 	private void setDefaultValues() {
 		setSelectedDrawingOption(DrawingOption.PENCIL);
-		setPaintColor(Color.BLUE);
+		setPaintColor(Color.BLUE, true);
 		setPaintStrokeWidth(10);
-		setPaintStyle(Style.STROKE, getResources().getText(R.string.stroke));
+		setPaintStyle(Style.STROKE);
 	}
 
 	private void setPaintStrokeWidth(int strokeWidth) {
@@ -135,7 +134,12 @@ public class DrawPaintActivity extends FragmentActivity {
 		}
 	}
 
-	private void setPaintColor(int color) {
+	private void setPaintColor(int color, boolean updatePiker) {
+		if (updatePiker){
+			ColorPickerView colorPickerView = (ColorPickerView) findViewById(R.id.paint_color_picker_view);
+			colorPickerView.setColor(color);
+		}
+		
 		drawManager.getPaint().setColor(color);
 		Button colorButton = (Button) findViewById(R.id.selected_color_button);
 		((GradientDrawable) ((StateListDrawable) colorButton.getBackground())
@@ -166,7 +170,8 @@ public class DrawPaintActivity extends FragmentActivity {
 		drawManager.setCurrentDrawingOption(drawableOption);
 		drawableOption.getDrawingOperation().onSelect(drawView, drawManager);
 		ImageButton selectedDrawingOption = (ImageButton) findViewById(R.id.selected_draw_option_button);
-		selectedDrawingOption.setImageResource(drawableOption.getIconResource());
+		selectedDrawingOption
+				.setImageResource(drawableOption.getIconResource());
 	}
 
 	public void onSelectColorClick(View view) {
@@ -186,16 +191,29 @@ public class DrawPaintActivity extends FragmentActivity {
 	}
 
 	public void onStyleSelectedClick(View view) {
-		setPaintStyle(Style.valueOf((String) view.getTag()),
-				((Button) view).getText());
+		setPaintStyle(Style.valueOf((String) view.getTag()));
 		View shapeScroolView = findViewById(R.id.style_scrool_view);
 		shapeScroolView.setVisibility(View.GONE);
-
 	}
 
-	private void setPaintStyle(Style style, CharSequence buttonText) {
+	private void setPaintStyle(Style style) {
 		drawManager.getPaint().setStyle(style);
-		Button selectedShape = (Button) findViewById(R.id.selected_style_button);
-		selectedShape.setText(buttonText);
+		ImageButton selectedShape = (ImageButton) findViewById(R.id.selected_style_button);
+		int resId = 0;
+		switch (style) {
+		case FILL:
+			resId = R.drawable.fill_style;
+			break;
+		case STROKE:
+			resId = R.drawable.stroke_style;
+			break;
+		case FILL_AND_STROKE:
+			resId = R.drawable.stroke_and_fill_style;
+			break;
+		default:
+			break;
+		}
+
+		selectedShape.setImageResource(resId);
 	}
 }

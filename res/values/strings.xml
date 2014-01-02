@@ -10,12 +10,13 @@
     <string name="text">text</string>
     <string name="circle">circle</string>
     <string name="action_settings">settings</string>
-    <string name="stroke_and_fill">s_f</string>
-    <string name="stroke">s</string>
-    <string name="fill">f</string>
+    <string name="stroke_and_fill">stroke and fill</string>
+    <string name="stroke">stroke</string>
+    <string name="fill">fill</string>
     <string name="type_your_text">Type Your Text</string>
     <string name="undo">undo</string>
     <string name="redo">redo</string>
+    <string name="select_style">select style</string>
     <string name="select_drawing_option">Select drawing option</string>
 
 </resources>

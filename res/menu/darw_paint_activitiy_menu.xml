@@ -7,11 +7,14 @@
    	<item
         android:id="@+id/action_undo_selected"
         android:orderInCategory="106"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
+        android:icon="@drawable/undo"
         android:title="@string/undo"/>
    		<item
         android:id="@+id/action_redo_selected"
         android:orderInCategory="107"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
+        android:icon="@drawable/redo"
         android:title="@string/redo"/>
+   		
 </menu>
