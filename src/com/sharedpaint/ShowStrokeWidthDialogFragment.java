@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 
 import com.example.myfirstapp.R;
@@ -53,30 +54,6 @@ public class ShowStrokeWidthDialogFragment extends DialogFragment {
 		return alertDialog;
 	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
-
-		  // safety check
-		  if (getDialog() == null)
-		    return;
-
-		  int dialogWidth = 210;// specify a value here
-		  int dialogHeight = LayoutParams.WRAP_CONTENT; // specify a value here
-
-		  getDialog().getWindow().setLayout(dialogWidth, dialogHeight);
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		LayoutParams params = getDialog().getWindow().getAttributes();
-		params.width = 70;
-		getDialog().getWindow().setAttributes(
-				(android.view.WindowManager.LayoutParams) params);
-
-		return super.onCreateView(inflater, container, savedInstanceState);
-	}
 
 	public StrokeWidthView getStrokeWidthView() {
 		return strokeWidthView;

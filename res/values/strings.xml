@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">My First App</string>
+    <string name="app_name">Shared Paint</string>
     <string name="title_draw_board">Draw Board</string>
     <string name="rectangle">rect</string>
     <string name="pencil">pencil</string>
@@ -16,7 +16,18 @@
     <string name="type_your_text">Type Your Text</string>
     <string name="undo">undo</string>
     <string name="redo">redo</string>
+    <string name="add_member">add member</string>
     <string name="select_style">select style</string>
     <string name="select_drawing_option">Select drawing option</string>
-
+    <string name="title_activity_desktop">Shared Paint</string>
+    <string name="create_new_board">Create New Board</string>
+    <string name="my_drawings">My Drawings</string>
+    <string name="empty_string"></string>
+    <string name="title_activity_create_new_board">Create New Board</string>
+    <string name="insert_board_name">Insert board name</string>
+    <string name="create">Create</string>
+    <string name="title_activity_members_mange">Members Mangement</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="add_new_member">Add new member</string>
+	<string name="save">Save</string>
 </resources>

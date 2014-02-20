@@ -2,29 +2,40 @@ package com.sharedpaint;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
 
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 
 import com.sharedpaint.drawables.Drawable;
+import com.sharedpaint.serializables.SerializableBitmap;
 import com.sharedpaint.serializables.SerializablePaint;
 
 public class DrawManager implements Serializable {
 	private static final long serialVersionUID = 1L;
-	List<Drawable> drawables;
+	BlockingDeque<Drawable> drawables;
 	Stack<Drawable> redoDrawables;
 	private Drawable currentDrawable;
 	private transient Paint paint;
 	private transient DrawingOption drowingOption;
-
+	private DrawView drawView;
+	private transient Bitmap backgroundBitmap;
+	
 	public DrawManager() {
-		drawables = new LinkedList<Drawable>();
+		drawables = new LinkedBlockingDeque<Drawable>();
 		redoDrawables = new Stack<Drawable>();
 		createPaint();
+	}
+	
+	public void createBackgroundBitmapIfNotExist(int width, int height) {
+		if (backgroundBitmap==null){
+			backgroundBitmap = Bitmap.createBitmap(width,height,Config.ARGB_8888);	
+		}	
 	}
 
 	private void createPaint() {
@@ -35,9 +46,10 @@ public class DrawManager implements Serializable {
 		paint.setStrokeJoin(Paint.Join.ROUND);
 	}
 
-	public void draw(DrawView drawView, Canvas canvas) {
+	public void draw(Canvas canvas) {
 		canvas.drawColor(0xFFFCCCCF);
-
+		canvas.drawBitmap(backgroundBitmap,0,0 , paint);
+		
 		for (Drawable drawable : drawables) {
 			drawable.draw(canvas);
 		}
@@ -48,14 +60,30 @@ public class DrawManager implements Serializable {
 	}
 
 	public void acceptCurrentDrawable() {
-		drawables.add(currentDrawable);
+		addDrawable(currentDrawable);
 		currentDrawable = null;
 		redoDrawables.clear();
 	}
 
+	private void addDrawable(Drawable drawable) {
+		drawables.add(drawable);
+		
+		if (drawables.size() > CommonConfig.getMaxDrawableUndo()){
+			Canvas canvas = new Canvas(backgroundBitmap);
+			drawables.poll().draw(canvas);
+		}
+	}
+	
+	public Bitmap getCurrentViewAsBitmap() {
+		Bitmap bitmap = Bitmap.createBitmap(backgroundBitmap.getWidth(),backgroundBitmap.getHeight(),Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+		draw(canvas);
+		return bitmap;
+	}
+
 	public void undolLastDrawable() {
 		if (!drawables.isEmpty()) {
-			redoDrawables.push(drawables.remove(drawables.size() - 1));
+			redoDrawables.push(drawables.removeLast());
 		}
 	}
 
@@ -85,6 +113,7 @@ public class DrawManager implements Serializable {
 		out.defaultWriteObject();
 		out.writeObject(new SerializablePaint(paint));
 		out.writeObject(drowingOption.name());
+		out.writeObject(new SerializableBitmap(backgroundBitmap));
 	}
 
 	private void readObject(java.io.ObjectInputStream in) throws IOException,
@@ -92,6 +121,8 @@ public class DrawManager implements Serializable {
 		in.defaultReadObject();
 		paint = ((SerializablePaint)in.readObject()).getPaint();
 		drowingOption = DrawingOption.valueOf((String) in.readObject());
+		backgroundBitmap = ((SerializableBitmap)in.readObject()).getBitmap();
 	}
 
+	
 }

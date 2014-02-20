@@ -24,24 +24,22 @@ public class DrawView extends View  {
 		setDrawingCacheEnabled(true);
 	}
 	
-	
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
          super.onSizeChanged(w, h, oldw, oldh);
-         
+         drawManager.createBackgroundBitmapIfNotExist(w,h);
      }
 
      @Override
      protected void onDraw(Canvas canvas) {
     	 super.onDraw(canvas);   
-    	 drawManager.draw(this, canvas);
+    	 drawManager.draw(canvas);
      }
 
     
      @Override
      public boolean onTouchEvent(MotionEvent event) {
-    	 
-    	 if (drawManager.getDrowingOption().getDrawingOperation().onTouchEvent(this, drawManager, event)){
+    	if (drawManager.getDrowingOption().getDrawingOperation().onTouchEvent(this, drawManager, event)){
     		 invalidate();
     	 }
          return true;
