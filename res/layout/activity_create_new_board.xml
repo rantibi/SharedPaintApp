@@ -1,26 +1,63 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".CreateNewBoardActivity" >
 
-    <EditText
-        android:id="@+id/new_borad_name_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/insert_board_name"
-        android:inputType="text"
-        android:maxLines="1"
-        android:singleLine="true" />
-
-    <Button
-        android:id="@+id/new_board_create_button"
+ 
+    <LinearLayout
+        android:id="@+id/create_new_board_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp"
-        android:text="@string/create" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone" >
 
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/create_new_board_status_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/create_new_board_progress_creating"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <!-- Login form -->
+
+    <ScrollView
+        android:id="@+id/create_new_board_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            style="@style/LoginFormContainer"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/new_borad_name_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/prompt_board_name"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+            <Button
+                android:id="@+id/create_new_board_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="16dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:text="@string/create_new_board" />
+        </LinearLayout>
+    </ScrollView>
+
+</merge>

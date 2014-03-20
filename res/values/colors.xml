@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- File created by the Android Action Bar Style Generator
+<!--
+     File created by the Android Action Bar Style Generator
 
      Copyright (C) 2011 The Android Open Source Project
      Copyright (C) 2012 readyState Software Ltd
@@ -18,8 +19,11 @@
 -->
 
 <resources>
+
     <color name="pressed_example">#AABBC5E5</color>
     <color name="actionbar_text">#AB000000</color>
     <color name="tab1_bg">#FFCCAA12</color>
     <color name="tab2_bg">#bbAA14FF</color>
+    <color name="black_overlay">#66000000</color>
+
 </resources>

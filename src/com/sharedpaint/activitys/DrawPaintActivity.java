@@ -20,27 +20,57 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
 
-import com.example.myfirstapp.R;
 import com.sharedpaint.DrawManager;
+import com.sharedpaint.DrawManagerListener;
 import com.sharedpaint.DrawView;
+import com.sharedpaint.DrawableFactory;
+import com.sharedpaint.DrawableIdsIterator;
 import com.sharedpaint.DrawingOption;
+import com.sharedpaint.ProgressAsyncTask;
+import com.sharedpaint.R;
 import com.sharedpaint.ShowStrokeWidthDialogFragment;
 import com.sharedpaint.StrokeWidthView;
+import com.sharedpaint.connection.ServerProxy;
+import com.sharedpaint.drawables.Drawable;
 import com.sharedpaint.operations.BitmapUtility;
+import com.sharedpaint.transfer.BoardDetails;
+import com.sharedpaint.transfer.BoardUpdate;
 import com.sharedpaint.views.ColorPickerView;
 import com.sharedpaint.views.ColorPickerView.OnColorChangedListener;
 
 public class DrawPaintActivity extends FragmentActivity {
+	public static final String BOARD = "BOARD";
 	private static final String DRAW_MANAGER = "DRAW_MANAGER";
+	private static final String DRAWABLE_IDS_ITERATOR = "DRAWABLE_IDS_ITERATOR";
 	private DrawView drawView;
 	private DrawManager drawManager;
 
+
+	private BoardDetails boardDetails;
+	private DrawableIdsIterator drawableIdsIterator;
+	private DrawablesUpdater updater;
+	private DrawablesAdder adder;
+
+	public DrawView getDrawView() {
+		return drawView;
+	}
+	
+	public DrawManager getDrawManager() {
+		return drawManager;
+	}
+	
+	public BoardDetails getBoardDetails() {
+		return boardDetails;
+	}
+	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		drawManager.setDrawManagerListener(null);
 		outState.putSerializable(DRAW_MANAGER, drawManager);
-
+		outState.putSerializable(DRAWABLE_IDS_ITERATOR, drawableIdsIterator);
 	}
 
 	@Override
@@ -48,10 +78,19 @@ public class DrawPaintActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.draw_paint_activitiy);
 
+		boardDetails = (BoardDetails) getIntent().getSerializableExtra(BOARD);
+		setTitle(boardDetails.getName());
+		adder = new DrawablesAdder(this);
+
 		if (savedInstanceState == null) {
-			drawManager = new DrawManager();
+			drawableIdsIterator = new DrawableIdsIterator(this, boardDetails);
+			drawManager = new DrawManager(new DrawableFactory(
+					drawableIdsIterator));
 			setDefaultValues();
 		} else {
+			drawableIdsIterator = (DrawableIdsIterator) savedInstanceState
+					.getSerializable(DRAWABLE_IDS_ITERATOR);
+			drawableIdsIterator.setActivity(this);
 			drawManager = (DrawManager) savedInstanceState
 					.getSerializable(DRAW_MANAGER);
 			setSelectedDrawingOption(drawManager.getDrowingOption());
@@ -59,10 +98,55 @@ public class DrawPaintActivity extends FragmentActivity {
 			setPaintStrokeWidth(drawManager.getPaint().getStrokeWidth());
 			setPaintStyle(drawManager.getPaint().getStyle());
 		}
-
+		
+		setDrawManagerListener();
 		setDrawView();
 		addColorPickerView();
 		addStokeWidthListener();
+		loadDrawables();
+	}
+
+	private void setDrawManagerListener() {
+		drawManager.setDrawManagerListener(new DrawManagerListener() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void drawableAccept(final Drawable drawable) {
+				adder.addDrawable(drawable);
+			}
+		});
+	}
+
+	private void loadDrawables() {
+		new ProgressAsyncTask(this, getString(R.string.loading),
+				getString(R.string.please_wait)) {
+			@Override
+			public void background() throws Exception {
+				BoardUpdate boardUpdate = ServerProxy.getInstance(
+						DrawPaintActivity.this).getDrawablesInBoard(
+						boardDetails.getId());
+				drawManager.updateBoard(boardUpdate);
+			};
+
+			@Override
+			public void post() {
+				drawView.invalidate();
+			};
+		}.execute((Void) null);
+
+		updater = new DrawablesUpdater(this);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		updater.start();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		updater.stop();
 	}
 
 	private void setDrawView() {
@@ -162,6 +246,15 @@ public class DrawPaintActivity extends FragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.darw_paint_activitiy_menu, menu);
+		
+		
+		
+		if(boardDetails.getManagerEmail().equals(ServerProxy.getInstance(this).getUserEmail())){
+			menu.findItem(R.id.action_leave_board).setVisible(false);
+		}else{
+			menu.findItem(R.id.action_delete_board).setVisible(false);
+		}
+		
 		return true;
 	}
 
@@ -170,19 +263,27 @@ public class DrawPaintActivity extends FragmentActivity {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
 		case R.id.action_undo_selected:
-			drawManager.undolLastDrawable();
+			// drawManager.undolLastDrawable();
+			actionUndoSelected();
 			drawView.invalidate();
 			break;
 		case R.id.action_redo_selected:
-			drawManager.redolLastDrawable();
-			drawView.invalidate();
+			// drawManager.redolLastDrawable();
+			actionRedoSelected();
 			break;
 		case R.id.action_add_member:
-			Intent intent = new Intent(this, MembersMangeActivity.class);
+			Intent intent = new Intent(this, MembersManageActivity.class);
+			intent.putExtra(BOARD, boardDetails);
 			startActivity(intent);
 			break;
-		case R.id.save_as_picture:
+		case R.id.action_save_as_picture:  
 			saveAsPicture();
+			break;
+		case R.id.action_delete_board:
+			deleteBoard();
+			break;
+		case R.id.action_leave_board:
+			leaveBoard();
 			break;
 		default:
 
@@ -190,8 +291,116 @@ public class DrawPaintActivity extends FragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void deleteBoard() {
+		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        switch (which){
+		        case DialogInterface.BUTTON_POSITIVE:
+		        	new ProgressAsyncTask(DrawPaintActivity.this, getString(R.string.deleting),
+		    				getString(R.string.please_wait)) {
+		    			@Override
+		    			public void background() throws Exception {
+		    				ServerProxy.getInstance(
+		    						DrawPaintActivity.this).deleteBoard(
+		    						boardDetails.getId());
+		    			};
+
+		    			@Override
+		    			public void post() {
+		    				Toast.makeText(DrawPaintActivity.this, getString(R.string.delete_board_success_message), Toast.LENGTH_LONG).show();
+		    				finish();
+		    			};
+		    		}.execute((Void) null);		
+
+		        	break;
+
+		        case DialogInterface.BUTTON_NEGATIVE:
+		        	// Do nothing
+		        	break;
+		        }
+		    }
+		};
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(getString(R.string.delete_board_sure_message)).setPositiveButton(android.R.string.yes, dialogClickListener)
+		    .setNegativeButton(android.R.string.no, dialogClickListener).show();
+			}
+
+	private void leaveBoard() {
+		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        switch (which){
+		        case DialogInterface.BUTTON_POSITIVE:
+		        	new ProgressAsyncTask(DrawPaintActivity.this, getString(R.string.leaving),
+		    				getString(R.string.please_wait)) {
+		    			@Override
+		    			public void background() throws Exception {
+		    				ServerProxy.getInstance(
+		    						DrawPaintActivity.this).leaveBoard(
+		    						boardDetails.getId());
+		    			};
+
+		    			@Override
+		    			public void post() {
+		    				Toast.makeText(DrawPaintActivity.this, getString(R.string.leave_board_success_message), Toast.LENGTH_LONG).show();
+		    				finish();
+		    			};
+		    		}.execute((Void) null);		
+
+		        	break;
+
+		        case DialogInterface.BUTTON_NEGATIVE:
+		        	// Do nothing
+		        	break;
+		        }
+		    }
+		};
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(getString(R.string.leave_board_sure_message)).setPositiveButton(android.R.string.yes, dialogClickListener)
+		    .setNegativeButton(android.R.string.no, dialogClickListener).show();
+			}
+
+	
+	private void actionUndoSelected() {
+		new ProgressAsyncTask(this, getString(R.string.undo_drawable_title),
+				getString(R.string.please_wait)) {
+			@Override
+			public void background() throws Exception {
+				ServerProxy.getInstance(
+						DrawPaintActivity.this).undoInBoard(
+						boardDetails.getId());
+			};
+
+			@Override
+			public void post() {
+				drawView.invalidate();
+			};
+		}.execute((Void) null);
+	}
+
+	
+	private void actionRedoSelected() {
+		new ProgressAsyncTask(this, getString(R.string.redo_drawable_title),
+				getString(R.string.please_wait)) {
+			@Override
+			public void background() throws Exception {
+				ServerProxy.getInstance(
+						DrawPaintActivity.this).redoInBoard(
+						boardDetails.getId());	
+			};
+
+			@Override
+			public void post() {
+				drawView.invalidate();
+			};
+		}.execute((Void) null);
+	}
+
 	private void saveAsPicture() {
-		
+
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 		alert.setTitle("Save as picture");
@@ -206,13 +415,16 @@ public class DrawPaintActivity extends FragmentActivity {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String filename = input.getText().toString();
 				Bitmap bitmap = drawManager.getCurrentViewAsBitmap();
-				
-				if(BitmapUtility.saveBitmapToExternalStorage(bitmap, "SharedPaint", filename, DrawPaintActivity.this)){
-					MessageBox.show(DrawPaintActivity.this, "Picture saved");
-				}else{
-					MessageBox.show(DrawPaintActivity.this, "Saved failed");
+
+				if (BitmapUtility.saveBitmapToExternalStorage(bitmap,
+						"SharedPaint", filename, DrawPaintActivity.this)) {
+					MessageBox.show(DrawPaintActivity.this, "Picture saved",
+							getString(R.string.save));
+				} else {
+					MessageBox.show(DrawPaintActivity.this, "Saved failed",
+							getString(R.string.save));
 				}
-				
+
 				dialog.dismiss();
 			}
 		});

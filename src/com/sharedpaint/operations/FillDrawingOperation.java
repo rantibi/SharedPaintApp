@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.sharedpaint.DrawManager;
+import com.sharedpaint.DrawableFactory;
 import com.sharedpaint.drawables.BitmapDrawable;
 import com.sharedpaint.drawables.QueueLinearFloodFiller;
 
@@ -44,7 +45,7 @@ public class FillDrawingOperation extends AbsrtcatDrawaingOptionOperation{
 		floodFiller.setTolerance(5);
 		bitmap = floodFiller.floodFill(x, y);
 		
-		currentInstance = newDrawableClassInstance();
+		currentInstance = newDrawableClassInstance(drawManager.getDrawableFactory());
 		((BitmapDrawable)currentInstance).setBitmap(bitmap);
 		drawManager.setCurrentDrawable(currentInstance);
 		drawManager.acceptCurrentDrawable();

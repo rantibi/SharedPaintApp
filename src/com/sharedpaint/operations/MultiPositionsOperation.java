@@ -47,7 +47,7 @@ public class MultiPositionsOperation extends AbsrtcatDrawaingOptionOperation{
 	}
 
 	public void touchDown(DrawManager drawManager, MotionEvent event) {
-		currentInstance = (MultiPositionsDrawable) newDrawableClassInstance();		
+		currentInstance = (MultiPositionsDrawable) newDrawableClassInstance(drawManager.getDrawableFactory());		
 		currentX = event.getX();
 		currentY = event.getY();
 		((MultiPositionsDrawable)currentInstance).addPosition(currentX, currentY);

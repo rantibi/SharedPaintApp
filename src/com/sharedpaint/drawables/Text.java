@@ -7,23 +7,12 @@ import com.sharedpaint.serializables.SerializablePaint;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-public class Text implements Drawable {
+public class Text extends AbstractDrawable {
 	private static final long serialVersionUID = 1L;
 	private String text;
 	private float x;
 	private float y;
-	private transient Paint paint;
-	private long id;
 
-	@Override
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	@Override
-	public long getId() {
-		return id;
-	}
 
 	@Override
 	public void draw(Canvas canvas) {
@@ -46,12 +35,10 @@ public class Text implements Drawable {
 
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
 		out.defaultWriteObject();
-		out.writeObject(new SerializablePaint(paint));
 	}
 
 	private void readObject(java.io.ObjectInputStream in) throws IOException,
 			ClassNotFoundException {
 		in.defaultReadObject();
-		paint = ((SerializablePaint) in.readObject()).getPaint();
 	}
 }

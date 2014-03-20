@@ -2,38 +2,15 @@ package com.sharedpaint.drawables;
 
 import java.io.IOException;
 
-import com.sharedpaint.serializables.SerializablePaint;
-
-import android.graphics.Paint;
-
-
-public abstract class AbsrtractStartEndPositionDrawable implements StartEndPositionDrawable{
+public abstract class AbsrtractStartEndPositionDrawable extends
+		AbstractDrawable implements StartEndPositionDrawable {
 
 	private static final long serialVersionUID = 1L;
 	protected float startX;
 	protected float startY;
 	protected float endY;
 	protected float endX;
-	protected transient Paint paint;
-	private long id;
-	
-	@Override
-	public void setId(long id) {
-		this.id = id;
-	}
-	
-	@Override
-	public long getId() {
-		return id;
-	}
-	
-	
-	@Override
-	public void setPaint(Paint paint) {
-		this.paint = paint;
-	}
-	
-	
+
 	@Override
 	public void setStartPosition(float x, float y) {
 		startX = x;
@@ -42,8 +19,6 @@ public abstract class AbsrtractStartEndPositionDrawable implements StartEndPosit
 		endY = y;
 	}
 
-	
-	
 	@Override
 	public void setEndPosition(float x, float y) {
 		endX = x;
@@ -52,12 +27,10 @@ public abstract class AbsrtractStartEndPositionDrawable implements StartEndPosit
 
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
 		out.defaultWriteObject();
-		out.writeObject(new SerializablePaint(paint));
 	}
 
 	private void readObject(java.io.ObjectInputStream in) throws IOException,
 			ClassNotFoundException {
 		in.defaultReadObject();
-		paint = ((SerializablePaint)in.readObject()).getPaint();
 	}
 }

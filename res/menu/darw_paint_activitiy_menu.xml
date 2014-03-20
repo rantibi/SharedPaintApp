@@ -1,17 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="99"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
-    <item
-        android:id="@+id/save_as_picture"
+        android:id="@+id/action_save_as_picture"
         android:icon="@drawable/save"
         android:orderInCategory="104"
         android:showAsAction="always"
         android:title="@string/save"/>
-    
     <item
         android:id="@+id/action_add_member"
         android:icon="@drawable/add_person"
@@ -30,5 +24,15 @@
         android:orderInCategory="107"
         android:showAsAction="always"
         android:title="@string/redo"/>
-
+     <item
+        android:id="@+id/action_leave_board"
+        android:orderInCategory="150"
+        android:showAsAction="never"
+        android:title="@string/leave_board"/>
+    <item
+        android:id="@+id/action_delete_board"
+        android:orderInCategory="151"
+        android:showAsAction="never"
+        android:title="@string/delete_board"/>
+ 
 </menu>

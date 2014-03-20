@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 
-import com.example.myfirstapp.R;
+import com.sharedpaint.R;
 
 public class AddTextDialogFragment extends DialogFragment {
 	public static String OK_LISTENER = "OK_LISTENER";

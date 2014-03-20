@@ -1,0 +1,120 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  Internal Error (javaClasses.cpp:136), pid=10308, tid=15628
+#  fatal error: Invalid layout of preloaded class
+#
+# JRE version:  (7.0_51-b13) (build )
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (24.51-b03 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000001f20800):  JavaThread "Unknown thread" [_thread_in_vm, id=15628, stack(0x0000000001e20000,0x0000000001f20000)]
+
+Stack: [0x0000000001e20000,0x0000000001f20000]
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x0000000001f20800 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=15628, stack(0x0000000001e20000,0x0000000001f20000)]
+
+VM state:not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (10 events):
+Event: 0.009 loading class 0x0000000001f6ff70 done
+Event: 0.009 loading class 0x0000000001f6f990 done
+Event: 0.009 loading class 0x0000000001f6f970
+Event: 0.009 loading class 0x0000000001f77a70
+Event: 0.009 loading class 0x0000000001f77a70 done
+Event: 0.009 loading class 0x0000000001f77aa0
+Event: 0.009 loading class 0x0000000001f77aa0 done
+Event: 0.009 loading class 0x0000000001f77ad0
+Event: 0.009 loading class 0x0000000001f77ad0 done
+Event: 0.009 loading class 0x0000000001f6f970 done
+
+
+Dynamic libraries:
+0x00007ff76e9e0000 - 0x00007ff76ea13000 	C:\Program Files\Java\jre7\bin\javaw.exe
+0x00007ffa230d0000 - 0x00007ffa23279000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ffa21230000 - 0x00007ffa21369000 	C:\WINDOWS\system32\KERNEL32.DLL
+0x00007ffa20800000 - 0x00007ffa2090f000 	C:\WINDOWS\system32\KERNELBASE.dll
+0x00007ffa1f080000 - 0x00007ffa1f10b000 	C:\WINDOWS\system32\apphelp.dll
+0x00007ffa16640000 - 0x00007ffa1668f000 	C:\WINDOWS\AppPatch\AppPatch64\AcGenral.DLL
+0x00007ffa20e90000 - 0x00007ffa20f37000 	C:\WINDOWS\system32\msvcrt.dll
+0x00007ffa20300000 - 0x00007ffa2032b000 	C:\WINDOWS\SYSTEM32\SspiCli.dll
+0x00007ffa20c50000 - 0x00007ffa20ca1000 	C:\WINDOWS\system32\SHLWAPI.dll
+0x00007ffa20ad0000 - 0x00007ffa20c41000 	C:\WINDOWS\system32\USER32.dll
+0x00007ffa22e10000 - 0x00007ffa22f86000 	C:\WINDOWS\system32\ole32.dll
+0x00007ffa21690000 - 0x00007ffa22a9f000 	C:\WINDOWS\system32\SHELL32.dll
+0x00007ffa1f990000 - 0x00007ffa1f9af000 	C:\WINDOWS\SYSTEM32\USERENV.dll
+0x00007ffa22d60000 - 0x00007ffa22e05000 	C:\WINDOWS\system32\ADVAPI32.dll
+0x00007ffa15860000 - 0x00007ffa1587b000 	C:\WINDOWS\SYSTEM32\MPR.dll
+0x00007ffa20cb0000 - 0x00007ffa20de6000 	C:\WINDOWS\system32\RPCRT4.dll
+0x00007ffa21430000 - 0x00007ffa21487000 	C:\WINDOWS\SYSTEM32\sechost.dll
+0x00007ffa214b0000 - 0x00007ffa21687000 	C:\WINDOWS\SYSTEM32\combase.dll
+0x00007ffa210e0000 - 0x00007ffa21225000 	C:\WINDOWS\system32\GDI32.dll
+0x00007ffa20450000 - 0x00007ffa20464000 	C:\WINDOWS\SYSTEM32\profapi.dll
+0x00007ffa1e790000 - 0x00007ffa1e831000 	C:\WINDOWS\SYSTEM32\SHCORE.dll
+0x00007ffa20e50000 - 0x00007ffa20e84000 	C:\WINDOWS\system32\IMM32.DLL
+0x00007ffa22f90000 - 0x00007ffa230c8000 	C:\WINDOWS\system32\MSCTF.dll
+0x00007ffa1e310000 - 0x00007ffa1e56a000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.9600.16384_none_62475f7becb72503\COMCTL32.dll
+0x0000000065e40000 - 0x0000000065f12000 	C:\Program Files\Java\jre7\bin\msvcr100.dll
+0x0000000065670000 - 0x0000000065e39000 	C:\Program Files\Java\jre7\bin\server\jvm.dll
+0x00007ffa19030000 - 0x00007ffa19039000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ffa1e9e0000 - 0x00007ffa1e9ff000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ffa214a0000 - 0x00007ffa214a7000 	C:\WINDOWS\system32\PSAPI.DLL
+0x00007ffa22d00000 - 0x00007ffa22d58000 	C:\WINDOWS\system32\WS2_32.dll
+0x00007ffa1e5b0000 - 0x00007ffa1e5da000 	C:\WINDOWS\SYSTEM32\WINMMBASE.dll
+0x00007ffa21490000 - 0x00007ffa21499000 	C:\WINDOWS\system32\NSI.dll
+0x00007ffa20520000 - 0x00007ffa2056a000 	C:\WINDOWS\SYSTEM32\cfgmgr32.dll
+0x00007ffa1f2d0000 - 0x00007ffa1f2f6000 	C:\WINDOWS\SYSTEM32\DEVOBJ.dll
+0x0000000065660000 - 0x000000006566f000 	C:\Program Files\Java\jre7\bin\verify.dll
+0x0000000065630000 - 0x0000000065658000 	C:\Program Files\Java\jre7\bin\java.dll
+0x0000000065610000 - 0x0000000065625000 	C:\Program Files\Java\jre7\bin\zip.dll
+
+VM Arguments:
+jvm_args: -Dfile.encoding=Cp1255 -Xbootclasspath/p:C:\adt-bundle-windows-x86_64-20131030\sdk\platforms\android-19\android.jar 
+java_command: bla
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk1.7.0_51
+PATH=C:/Program Files/Java/jdk1.7.0_51/bin/../jre/bin/server;C:/Program Files/Java/jdk1.7.0_51/bin/../jre/bin;C:/Program Files/Java/jdk1.7.0_51/bin/../jre/lib/amd64;C:\Program Files\Java\jdk1.7.0_51\bin;C:\Program Files\Java\jdk1.7.0_51/db\bin;C:\Program Files\nodejs\;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Lenovo Fingerprint Reader\;C:\Program Files\Lenovo Fingerprint Reader\x86\;C:\ProgramData\Lenovo\ReadyApps;;C:\Program Files\TortoiseGit\bin;C:\adt-bundle-windows-x86_64-20131030\eclipse;
+USERNAME=ran
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 58 Stepping 9, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 8 , 64 bit Build 9200 
+
+CPU:total 8 (4 cores per cpu, 2 threads per core) family 6 model 58 stepping 9, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, aes, erms, ht, tsc, tscinvbit, tscinv
+
+Memory: 4k page, physical 8230860k(1977584k free), swap 12687308k(4279972k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (24.51-b03) for windows-amd64 JRE (1.7.0_51-b13), built on Dec 18 2013 18:40:56 by "java_re" with unknown MS VC++:1600
+
+time: Tue Mar 11 20:34:47 2014
+elapsed time: 0 seconds
+

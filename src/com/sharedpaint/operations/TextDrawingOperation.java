@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.myfirstapp.R;
+import com.sharedpaint.R;
 import com.sharedpaint.AddTextDialogFragment;
 import com.sharedpaint.AddTextDialogFragment.OnClickSerializableListener;
 import com.sharedpaint.DrawManager;
@@ -130,7 +130,7 @@ public class TextDrawingOperation extends AbsrtcatDrawaingOptionOperation {
 
 	protected void creatTextInstance(DrawManager drawManager, float x, float y,
 			String text) {
-		currentInstance = newDrawableClassInstance();
+		currentInstance = newDrawableClassInstance(drawManager.getDrawableFactory());
 		currentX = x;
 		currentY = y;
 		((Text) currentInstance).setText(text);

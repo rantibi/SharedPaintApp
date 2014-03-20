@@ -3,6 +3,7 @@ package com.sharedpaint.operations;
 import android.view.MotionEvent;
 
 import com.sharedpaint.DrawManager;
+import com.sharedpaint.DrawableFactory;
 import com.sharedpaint.drawables.Drawable;
 
 public abstract class AbsrtcatDrawaingOptionOperation implements DrawingOptionOperation{
@@ -12,23 +13,14 @@ public abstract class AbsrtcatDrawaingOptionOperation implements DrawingOptionOp
 	protected float currentX;
 	protected float currentY;
 	protected Class<? extends Drawable> drawableClass;
-
+	
 	public AbsrtcatDrawaingOptionOperation(
-			Class<? extends Drawable> drawableClass) {
+			Class<? extends Drawable> drawableClass ) {
 		this.drawableClass = drawableClass;
 	}
 	
-	protected Drawable newDrawableClassInstance(){
-		try {
-			return drawableClass.newInstance();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	protected Drawable newDrawableClassInstance(DrawableFactory drawableFactory){
+		return drawableFactory.newDrawable(drawableClass);
 	}
 	
 	/**

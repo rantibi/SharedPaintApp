@@ -45,7 +45,7 @@ public class StartEndPositionOperation extends AbsrtcatDrawaingOptionOperation {
 	}
 
 	private void touchDown(DrawManager drawManager, MotionEvent event) {
-		currentInstance = (StartEndPositionDrawable) newDrawableClassInstance();		
+		currentInstance = (StartEndPositionDrawable) newDrawableClassInstance(drawManager.getDrawableFactory());		
 		currentX = event.getX();
 		currentY = event.getY();
 		((StartEndPositionDrawable)currentInstance).setStartPosition(currentX, currentY);

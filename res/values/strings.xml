@@ -19,7 +19,7 @@
     <string name="add_member">add member</string>
     <string name="select_style">select style</string>
     <string name="select_drawing_option">Select drawing option</string>
-    <string name="title_activity_desktop">Shared Paint</string>
+    <string name="title_activity_desktop">My Drawings</string>
     <string name="create_new_board">Create New Board</string>
     <string name="my_drawings">My Drawings</string>
     <string name="empty_string"></string>
@@ -29,5 +29,27 @@
     <string name="title_activity_members_mange">Members Mangement</string>
     <string name="hello_world">Hello world!</string>
     <string name="add_new_member">Add new member</string>
-	<string name="save">Save</string>
+    <string name="save">Save</string>
+    <string name="authorization">authorization</string>
+    <string name="title_activity_start">StartActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="loading">Loading</string>
+    <string name="undo_drawable_title">Undo</string>
+    <string name="redo_drawable_title">Redo</string>
+    <string name="please_wait">Please wait&#8230;</string>
+    <string name="create_new_board_progress_creating">Creating&#8230;</string>
+    <string name="create_new_board_name_length_error">Must be 5-15 characters</string>
+    <string name="prompt_board_name">Board name</string>
+    <string name="remove_member">remove member</string>
+    <string name="add">Add</string>
+    <string name="delete_board">Delete board</string>
+    <string name="delete_board_sure_message">Are you sure that you want to delete the board?</string>
+    <string name="delete_board_success_message">Board delete successfully</string>
+    <string name="deleting">Deleting</string>
+    <string name="leave_board">Leave board</string>
+    <string name="leave_board_sure_message">Are you sure that you want to leave the board?</string>
+    <string name="leave_board_success_message">You left the board successfully</string>
+    <string name="leaving">Leaving</string>
+	<string name="action_logout">Logout</string>
 </resources>

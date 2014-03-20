@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 
-import com.example.myfirstapp.R;
+import com.sharedpaint.R;
 
 public class ShowStrokeWidthDialogFragment extends DialogFragment {
 

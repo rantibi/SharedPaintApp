@@ -5,7 +5,7 @@ import java.io.Serializable;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-public interface Drawable extends Serializable{
+public interface Drawable extends Serializable, Comparable<Drawable>{
 
 	public void draw(Canvas canvas); 
 
@@ -14,4 +14,8 @@ public interface Drawable extends Serializable{
 	public long getId();
 	
 	public void setId(long id);
+	
+	public void setTime(long time);
+	
+	public long getTime();
 }

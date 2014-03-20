@@ -1,15 +1,12 @@
 package com.sharedpaint.activitys;
 
-import com.example.myfirstapp.R;
-import com.example.myfirstapp.R.id;
-import com.example.myfirstapp.R.layout;
-import com.example.myfirstapp.R.menu;
-import com.example.myfirstapp.R.string;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,18 +17,17 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.sharedpaint.R;
+import com.sharedpaint.SharedPaintException;
+import com.sharedpaint.connection.ServerProxy;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
 public class LoginActivity extends Activity {
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
 
 	/**
 	 * The default email to populate the email field with.
@@ -39,13 +35,13 @@ public class LoginActivity extends Activity {
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
 	/**
-	 * Keep track of the login task to ensure we can cancel it if requested.
+	 * 0 Keep track of the login task to ensure we can cancel it if requested.
 	 */
-	private UserLoginTask mAuthTask = null;
+	private AsyncTask<Void, Void, Boolean> mAuthTask = null;
 
 	// Values for email and password at the time of the login attempt.
-	private String mEmail;
-	private String mPassword;
+	private String email;
+	private String password;
 
 	// UI references.
 	private EditText mEmailView;
@@ -59,11 +55,10 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_login);
-
 		// Set up the login form.
-		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
+		email = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.email);
-		mEmailView.setText(mEmail);
+		mEmailView.setText(email);
 
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
@@ -90,6 +85,14 @@ public class LoginActivity extends Activity {
 						attemptLogin();
 					}
 				});
+
+		findViewById(R.id.register_button).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						attemptRegister();
+					}
+				});
 	}
 
 	@Override
@@ -99,54 +102,44 @@ public class LoginActivity extends Activity {
 		return true;
 	}
 
+	private void attemptRegister() {
+		if (checkForm()) {
+			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// Show a progress spinner, and kick off a background task
+					// to
+					// perform the user login attempt.
+					switch (which) {
+					case DialogInterface.BUTTON_POSITIVE:
+
+						mLoginStatusMessageView
+								.setText(R.string.login_progress_register);
+						showProgress(true);
+						mAuthTask = new RegisterTask();
+						mAuthTask.execute((Void) null);
+						break;
+					}
+				}
+			};
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(getString(R.string.register_sure_message))
+					.setPositiveButton(android.R.string.yes,
+							dialogClickListener)
+					.setNegativeButton(android.R.string.no, dialogClickListener)
+					.show();
+		}
+
+	}
+
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
 	 * If there are form errors (invalid email, missing fields, etc.), the
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
-		if (mAuthTask != null) {
-			return;
-		}
-
-		// Reset errors.
-		mEmailView.setError(null);
-		mPasswordView.setError(null);
-
-		// Store values at the time of the login attempt.
-		mEmail = mEmailView.getText().toString();
-		mPassword = mPasswordView.getText().toString();
-
-		boolean cancel = false;
-		View focusView = null;
-
-		// Check for a valid password.
-		if (TextUtils.isEmpty(mPassword)) {
-			mPasswordView.setError(getString(R.string.error_field_required));
-			focusView = mPasswordView;
-			cancel = true;
-		} else if (mPassword.length() < 4) {
-			mPasswordView.setError(getString(R.string.error_invalid_password));
-			focusView = mPasswordView;
-			cancel = true;
-		}
-
-		// Check for a valid email address.
-		if (TextUtils.isEmpty(mEmail)) {
-			mEmailView.setError(getString(R.string.error_field_required));
-			focusView = mEmailView;
-			cancel = true;
-		} else if (!mEmail.contains("@")) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
-			focusView = mEmailView;
-			cancel = true;
-		}
-
-		if (cancel) {
-			// There was an error; don't attempt login and focus the first
-			// form field with an error.
-			focusView.requestFocus();
-		} else {
+		if (checkForm()) {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
@@ -154,6 +147,51 @@ public class LoginActivity extends Activity {
 			mAuthTask = new UserLoginTask();
 			mAuthTask.execute((Void) null);
 		}
+	}
+
+	private boolean checkForm() {
+		if (mAuthTask != null) {
+			return false;
+		}
+
+		// Reset errors.
+		mEmailView.setError(null);
+		mPasswordView.setError(null);
+
+		// Store values at the time of the login attempt.
+		email = mEmailView.getText().toString();
+		password = mPasswordView.getText().toString();
+
+		boolean success = true;
+		View focusView = null;
+
+		// Check for a valid password.
+		if (TextUtils.isEmpty(password)) {
+			mPasswordView.setError(getString(R.string.error_field_required));
+			focusView = mPasswordView;
+			success = false;
+		} else if (password.length() < 4) {
+			mPasswordView.setError(getString(R.string.error_invalid_password));
+			focusView = mPasswordView;
+			success = false;
+		}
+
+		// Check for a valid email address.
+		if (TextUtils.isEmpty(email)) {
+			mEmailView.setError(getString(R.string.error_field_required));
+			focusView = mEmailView;
+			success = false;
+		} else if (!email.contains("@")) {
+			mEmailView.setError(getString(R.string.error_invalid_email));
+			focusView = mEmailView;
+			success = false;
+		}
+
+		if (!success) {
+			focusView.requestFocus();
+		}
+
+		return success;
 	}
 
 	/**
@@ -197,6 +235,12 @@ public class LoginActivity extends Activity {
 		}
 	}
 
+	private void startDesktopActivity() {
+		Intent intent = new Intent(LoginActivity.this, DesktopActivity.class);
+		startActivity(intent);
+		finish();
+	}
+
 	/**
 	 * Represents an asynchronous login/registration task used to authenticate
 	 * the user.
@@ -204,25 +248,8 @@ public class LoginActivity extends Activity {
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
-
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				return false;
-			}
-
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mEmail)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
-				}
-			}
-
-			// TODO: register the new account here.
-			return true;
+			return ServerProxy.getInstance(LoginActivity.this).login(email,
+					password);
 		}
 
 		@Override
@@ -231,7 +258,7 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
-				finish();
+				startDesktopActivity();
 			} else {
 				mPasswordView
 						.setError(getString(R.string.error_incorrect_password));
@@ -245,4 +272,40 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 		}
 	}
+
+	public class RegisterTask extends AsyncTask<Void, Void, Boolean> {
+		private SharedPaintException exception;
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			try {
+				ServerProxy.getInstance(LoginActivity.this).register(email,
+						password);
+			} catch (SharedPaintException e) {
+				exception = e;
+				return false;
+			}
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(final Boolean success) {
+			mAuthTask = null;
+			showProgress(false);
+
+			if (success) {
+				startDesktopActivity();
+			} else {
+				Toast.makeText(LoginActivity.this, exception.getMessage(),
+						Toast.LENGTH_LONG).show();
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			mAuthTask = null;
+			showProgress(false);
+		}
+	}
+
 }

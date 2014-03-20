@@ -1,6 +1,6 @@
 package com.sharedpaint;
 
-import com.example.myfirstapp.R;
+import com.sharedpaint.R;
 import com.sharedpaint.drawables.Circle;
 import com.sharedpaint.drawables.Line;
 import com.sharedpaint.drawables.Pencil;

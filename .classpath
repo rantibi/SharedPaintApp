@@ -13,6 +13,11 @@
 			<accessrule kind="nonaccessible" pattern="com/android/internal/**"/>
 		</accessrules>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="C:/Users/ran/workspace/SharedPaintCommon/libs/android-support-v4.jar"/>
+	<classpathentry kind="lib" path="libs/jersey-bundle-1.18.jar"/>
+	<classpathentry kind="lib" path="libs/gson-2.2.4.jar" sourcepath="libs/gson-2.2.4-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/SharedPaintApp/libs/gson-2.2.4-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
