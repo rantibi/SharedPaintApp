@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -20,7 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sharedpaint.R;
+import com.sharedpaint.SettingsActivity;
 import com.sharedpaint.SharedPaintException;
+import com.sharedpaint.connection.ConnectionException;
 import com.sharedpaint.connection.ServerProxy;
 
 /**
@@ -100,6 +103,21 @@ public class LoginActivity extends Activity {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.login, menu);
 		return true;
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			Intent intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
+			break;
+
+		default:
+			break;
+		}
+
+		return super.onMenuItemSelected(featureId, item);
 	}
 
 	private void attemptRegister() {
@@ -246,10 +264,17 @@ public class LoginActivity extends Activity {
 	 * the user.
 	 */
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+		private ConnectionException exception;
+
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			return ServerProxy.getInstance(LoginActivity.this).login(email,
-					password);
+			try {
+				return ServerProxy.getInstance(LoginActivity.this).login(email,
+						password);
+			} catch (ConnectionException e) {
+				exception = e;
+				return false;
+			}
 		}
 
 		@Override
@@ -260,9 +285,13 @@ public class LoginActivity extends Activity {
 			if (success) {
 				startDesktopActivity();
 			} else {
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
+				if (exception != null) {
+					Toast.makeText(LoginActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+				} else {
+					mPasswordView
+							.setError(getString(R.string.error_incorrect_password));
+					mPasswordView.requestFocus();
+				}
 			}
 		}
 

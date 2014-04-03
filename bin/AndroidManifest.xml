@@ -22,8 +22,7 @@
         android:theme="@style/Theme.Example" >
         <activity
             android:name="com.sharedpaint.activitys.DrawPaintActivity"
-            android:label="@string/empty_string"
-            >
+            android:label="@string/empty_string" >
         </activity>
         <activity
             android:name="com.sharedpaint.activitys.LoginActivity"
@@ -54,6 +53,10 @@
             android:name="com.sharedpaint.activitys.CreateNewBoardActivity"
             android:label="@string/title_activity_create_new_board"
             android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="com.sharedpaint.SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 

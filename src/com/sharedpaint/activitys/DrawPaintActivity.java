@@ -68,7 +68,7 @@ public class DrawPaintActivity extends FragmentActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		drawManager.setDrawManagerListener(null);
+		//drawManager.setDrawManagerListener(null);
 		outState.putSerializable(DRAW_MANAGER, drawManager);
 		outState.putSerializable(DRAWABLE_IDS_ITERATOR, drawableIdsIterator);
 	}

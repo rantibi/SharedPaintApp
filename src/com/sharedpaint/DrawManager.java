@@ -168,14 +168,23 @@ public class DrawManager implements Serializable {
 	public void updateBoard(BoardUpdate boardUpdate) {
 		setLastUpdate(boardUpdate.getTo().getTime());
 		
-		Drawable drawable= new AbstractDrawable() {
+		/*Drawable drawable= new AbstractDrawable() {
 			@Override
 			public void draw(Canvas canvas) {
 			}
-		};
+		};*/
 		
+		Drawable drawable = null;
+		//TODO: fix it - bad code!!!!
 		for (Long id : boardUpdate.getRemovedDrawables().keySet()) {
-			drawable.setId(id);
+			//drawable.setId(id);
+			//drawables.remove(drawable);
+			for (Drawable curr_drawable : drawables) {
+				if(curr_drawable.getId() == id){
+					drawable = curr_drawable;
+				}
+			}
+			
 			drawables.remove(drawable);
 		}
 		
@@ -184,6 +193,7 @@ public class DrawManager implements Serializable {
 				drawable = IOUtils.byteArrayToObject(holder.getDrawable());
 				drawable.setTime(holder.getDateTime().getTime());
 				drawables.add(drawable);
+				
 			} catch (Exception e) {
 				// TODO handle this exception!!!
 				e.printStackTrace();

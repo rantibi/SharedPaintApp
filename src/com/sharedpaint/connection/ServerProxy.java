@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +36,7 @@ import com.sharedpaint.transfer.DrawableHolder;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 
@@ -72,10 +73,11 @@ public class ServerProxy {
 
 	private WebResource getWebResource() {
 		Client client = Client.create();
+		client.setConnectTimeout(1000);
 		return client.resource(URL);
 	}
 
-	public boolean loginFromCache() {
+	public boolean loginFromCache() throws ConnectionException {
 		SharedPreferences sharedPref = activity.getSharedPreferences(LOGGIN,
 				Context.MODE_PRIVATE);
 		authorization = sharedPref
@@ -86,7 +88,7 @@ public class ServerProxy {
 		return authorization != null && login();
 	}
 
-	public boolean login(String email, String password) {
+	public boolean login(String email, String password) throws ConnectionException {
 		authorization = Base64.encodeToString(
 				(email + ":" + password).getBytes(), Base64.DEFAULT);
 
@@ -106,23 +108,24 @@ public class ServerProxy {
 	
 	
 
-	private boolean login() {
+	private boolean login() throws ConnectionException {
 		ClientResponse response = getResponse(getWebResource().path("login"));
 		return response.getStatus() == 200;
 	}
 
-	public void register(String email, String password) throws SharedPaintException {
+	public void register(String email, String password) throws SharedPaintException, ConnectionException {
 		ClientResponse response = getResponse(getWebResource()
 				.path("/register")
 				.queryParam("user_email", email)
 				.queryParam("password", password));
 
-		if (response.getStatus() != 200) {
-			throw new SharedPaintException(getStringEntity(response));
-		}
+		checkResponseStatus(response);
 		
 		login(email, password);
 	}
+
+	
+	
 	public void logout() {
 		SharedPreferences sharedPref = activity.getSharedPreferences(LOGGIN,
 				Context.MODE_PRIVATE);
@@ -131,12 +134,10 @@ public class ServerProxy {
 		editor.commit();
 	}
 
-	public List<BoardDetails> getBoards() throws SharedPaintException {
+	public List<BoardDetails> getBoards() throws SharedPaintException, ConnectionException {
 		ClientResponse response = getResponse(getWebResource().path("boards"));
 
-		if (response.getStatus() != 200) {
-			throw new SharedPaintException(getStringEntity(response));
-		}
+		checkResponseStatus(response);
 
 		Gson gson = new Gson();
 		InputStreamReader result = new InputStreamReader(
@@ -148,9 +149,13 @@ public class ServerProxy {
 		return boards;
 	}
 
-	private ClientResponse getResponse(WebResource webResource) {
+	private ClientResponse getResponse(WebResource webResource) throws ConnectionException {
+		try{
 		return webResource.accept(MediaType.APPLICATION_JSON)
 				.header(AUTHORIZATION, authorization).get(ClientResponse.class);
+		}catch (RuntimeException e) {
+			throw new ConnectionException("No connection to the server");
+		}
 	}
 
 	private String getStringEntity(ClientResponse response) {
@@ -176,15 +181,13 @@ public class ServerProxy {
 	}
 
 	public List<Long> getNewDrawaleIds(long boardId, int count)
-			throws SharedPaintException {
+			throws SharedPaintException, ConnectionException {
 		ClientResponse response = getResponse(getWebResource()
 				.path("/new_drawble_ids")
 				.queryParam("board_id", Long.toString(boardId))
 				.queryParam("count", Integer.toString(count)));
 
-		if (response.getStatus() != 200) {
-			throw new SharedPaintException(getStringEntity(response));
-		}
+		checkResponseStatus(response);
 
 		Gson gson = new Gson();
 		InputStreamReader result = new InputStreamReader(
@@ -232,14 +235,12 @@ public class ServerProxy {
 	}
 
 	public BoardUpdate getDrawablesInBoard(long boardId)
-			throws SharedPaintException {
+			throws SharedPaintException, ConnectionException {
 		ClientResponse response = getResponse(getWebResource().path(
 				"/drawables_in_board").queryParam("board_id",
 				Long.toString(boardId)));
 
-		if (response.getStatus() != 200) {
-			throw new SharedPaintException(getStringEntity(response));
-		}
+		checkResponseStatus(response);
 
 		Gson gson = new Gson();
 		InputStreamReader result = new InputStreamReader(
@@ -248,15 +249,13 @@ public class ServerProxy {
 	}
 
 	public BoardUpdate getBoardUpdate(long boardId, long from)
-			throws SharedPaintException {
+			throws SharedPaintException, ConnectionException {
 		ClientResponse response = getResponse(getWebResource()
 				.path("/board_update")
 				.queryParam("board_id", Long.toString(boardId))
 				.queryParam("from", Long.toString(from)));
 
-		if (response.getStatus() != 200) {
-			throw new SharedPaintException(getStringEntity(response));
-		}
+		checkResponseStatus(response);
 
 		Gson gson = new Gson();
 		InputStreamReader result = new InputStreamReader(
@@ -265,32 +264,26 @@ public class ServerProxy {
 
 	}
 
-	public void undoInBoard(long boardId) throws SharedPaintException {
+	public void undoInBoard(long boardId) throws SharedPaintException, ConnectionException {
 		ClientResponse response = getResponse(getWebResource().path(
 				"/board_undo").queryParam("board_id", Long.toString(boardId)));
 
-		if (response.getStatus() != 200) {
-			throw new SharedPaintException(getStringEntity(response));
-		}
+		checkResponseStatus(response);
 	}
 
-	public void redoInBoard(long boardId) throws SharedPaintException {
+	public void redoInBoard(long boardId) throws SharedPaintException, ConnectionException {
 		ClientResponse response = getResponse(getWebResource().path(
 				"/board_redo").queryParam("board_id", Long.toString(boardId)));
 
-		if (response.getStatus() != 200) {
-			throw new SharedPaintException(getStringEntity(response));
-		}
+		checkResponseStatus(response);
 	}
 
 	public BoardDetails createNewBoard(String boardName)
-			throws SharedPaintException {
+			throws SharedPaintException, ConnectionException {
 		ClientResponse response = getResponse(getWebResource().path(
 				"/new_board").queryParam("board_name", boardName));
 
-		if (response.getStatus() != 200) {
-			throw new SharedPaintException(getStringEntity(response));
-		}
+		checkResponseStatus(response);
 
 		Gson gson = new Gson();
 		InputStreamReader result = new InputStreamReader(
@@ -299,14 +292,12 @@ public class ServerProxy {
 	}
 
 	public List<String> getBoardMembers(long boardId)
-			throws SharedPaintException {
+			throws SharedPaintException, ConnectionException {
 		ClientResponse response = getResponse(getWebResource().path(
 				"/board_members")
 				.queryParam("board_id", Long.toString(boardId)));
 
-		if (response.getStatus() != 200) {
-			throw new SharedPaintException(getStringEntity(response));
-		}
+		checkResponseStatus(response);
 
 		Gson gson = new Gson();
 		InputStreamReader result = new InputStreamReader(
@@ -317,47 +308,50 @@ public class ServerProxy {
 	}
 
 	public void removeMemberFromBoard(long boardId, String userEmail)
-			throws SharedPaintException {
+			throws SharedPaintException, ConnectionException {
 		ClientResponse response = getResponse(getWebResource()
 				.path("/remove_board_member")
 				.queryParam("board_id", Long.toString(boardId))
 				.queryParam("user_email", userEmail));
 
-		if (response.getStatus() != 200) {
-			throw new SharedPaintException(getStringEntity(response));
-		}
+		checkResponseStatus(response);
 	}
 
 	public void addMemberToBoard(long boardId, String userEmail)
-			throws SharedPaintException {
+			throws SharedPaintException, ConnectionException {
 		ClientResponse response = getResponse(getWebResource()
 				.path("/add_board_member")
 				.queryParam("board_id", Long.toString(boardId))
 				.queryParam("user_email", userEmail));
 
-		if (response.getStatus() != 200) {
-			throw new SharedPaintException(getStringEntity(response));
-		}
+		checkResponseStatus(response);
 	}
 
-	public void deleteBoard(long boardId) throws SharedPaintException {
+	public void deleteBoard(long boardId) throws SharedPaintException, ConnectionException {
 		ClientResponse response = getResponse(getWebResource().path(
 				"/delete_board").queryParam("board_id", Long.toString(boardId)));
 
-		if (response.getStatus() != 200) {
-			throw new SharedPaintException(getStringEntity(response));
-		}
+		checkResponseStatus(response);
 	}
 
-	public void leaveBoard(long boardId) throws SharedPaintException {
+	public void leaveBoard(long boardId) throws SharedPaintException, ConnectionException {
 		ClientResponse response = getResponse(getWebResource().path(
 				"/leave_board").queryParam("board_id", Long.toString(boardId)));
 
-		if (response.getStatus() != 200) {
-			throw new SharedPaintException(getStringEntity(response));
-		}
+		checkResponseStatus(response);
 	}
 
-	
-
+	private void checkResponseStatus(ClientResponse response)
+			throws SharedPaintException, AccessDeniedException {
+		
+		switch (response.getStatus()) {
+		case 200:
+			return;
+		case 401:
+			throw new AccessDeniedException(getStringEntity(response));
+		default:
+			throw new SharedPaintException(getStringEntity(response));
+		}
+		
+	}
 }
