@@ -20,7 +20,6 @@ public class ConnectionException extends SharedPaintException {
 
 	public ConnectionException(Throwable throwable) {
 		super(throwable);
-		// TODO Auto-generated constructor stub
 	}
 
 }

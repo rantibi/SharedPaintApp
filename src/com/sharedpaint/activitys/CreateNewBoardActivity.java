@@ -26,7 +26,6 @@ import com.sharedpaint.transfer.BoardDetails;
 public class CreateNewBoardActivity extends Activity {
 	/**
 	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
 	 */
 
 	public static final String BOARD_NAME = "BOARD_NAME";
@@ -176,7 +175,7 @@ public class CreateNewBoardActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			try {
-				board = ServerProxy.getInstance(CreateNewBoardActivity.this)
+				board = ServerProxy.getInstance()
 						.createNewBoard(boardName);
 			} catch (SharedPaintException e) {
 				exception = e;
@@ -199,7 +198,6 @@ public class CreateNewBoardActivity extends Activity {
 				startActivity(intent);
 				finish();
 			} else {
-				//TODO: do somthing with the exception
 				Toast.makeText(CreateNewBoardActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
 			}
 		}

@@ -89,7 +89,7 @@ public class DesktopActivity extends Activity {
 	}
 
 	private void logout() {
-		ServerProxy.getInstance(this).logout();
+		ServerProxy.getInstance().logout();
 		Intent intent = new Intent(this, LoginActivity.class);
 		startActivity(intent);
 		finish();
@@ -109,8 +109,7 @@ public class DesktopActivity extends Activity {
 			List<BoardDetails> boards;
 
 			try {
-				boards = ServerProxy.getInstance(DesktopActivity.this)
-						.getBoards();
+				boards = ServerProxy.getInstance().getBoards();
 			} catch (SharedPaintException e) {
 				excepetion = e;
 				return false;

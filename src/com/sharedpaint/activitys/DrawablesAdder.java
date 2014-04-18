@@ -54,7 +54,7 @@ public class DrawablesAdder {
 							runningLock.unlock();
 						}
 
-						ServerProxy.getInstance(drawPaintActivity)
+						ServerProxy.getInstance()
 								.addNewDrawable(
 										drawPaintActivity.getBoardDetails()
 												.getId(), queue.poll());

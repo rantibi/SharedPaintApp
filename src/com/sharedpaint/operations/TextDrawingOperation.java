@@ -110,7 +110,6 @@ public class TextDrawingOperation extends AbsrtcatDrawaingOptionOperation {
 			@Override
 			State touchDown(TextDrawingOperation textOperation, View view,
 					DrawManager drawManager, MotionEvent event) {
-				// TODO Auto-generated method stub
 				return NEW_TEXT;
 			}
 		},

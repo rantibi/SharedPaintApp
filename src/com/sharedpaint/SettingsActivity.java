@@ -9,9 +9,14 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 
 public class SettingsActivity extends PreferenceActivity {
+	
+	public static final String KEY_PREF_SERVER_ADDRESS = "server_address";
+	public static final String KEY_PREF_SERVER_PORT = "server_port";
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		// Display the fragment as the main content.
 		getFragmentManager().beginTransaction()
 				.replace(android.R.id.content, new SettingsFragment()).commit();
@@ -27,6 +32,10 @@ public class SettingsActivity extends PreferenceActivity {
 			addPreferencesFromResource(R.xml.pref_general);
 			SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
 			sp.registerOnSharedPreferenceChangeListener(this);
+			Preference host = findPreference(KEY_PREF_SERVER_ADDRESS);
+			host.setSummary(sp.getString(KEY_PREF_SERVER_ADDRESS, ""));
+			Preference port = findPreference(KEY_PREF_SERVER_PORT);
+			port.setSummary(sp.getString(KEY_PREF_SERVER_PORT, ""));
 		}
 
 		@Override

@@ -83,14 +83,13 @@ public class DrawPaintActivity extends FragmentActivity {
 		adder = new DrawablesAdder(this);
 
 		if (savedInstanceState == null) {
-			drawableIdsIterator = new DrawableIdsIterator(this, boardDetails);
+			drawableIdsIterator = new DrawableIdsIterator(boardDetails);
 			drawManager = new DrawManager(new DrawableFactory(
 					drawableIdsIterator));
 			setDefaultValues();
 		} else {
 			drawableIdsIterator = (DrawableIdsIterator) savedInstanceState
 					.getSerializable(DRAWABLE_IDS_ITERATOR);
-			drawableIdsIterator.setActivity(this);
 			drawManager = (DrawManager) savedInstanceState
 					.getSerializable(DRAW_MANAGER);
 			setSelectedDrawingOption(drawManager.getDrowingOption());
@@ -122,9 +121,8 @@ public class DrawPaintActivity extends FragmentActivity {
 				getString(R.string.please_wait)) {
 			@Override
 			public void background() throws Exception {
-				BoardUpdate boardUpdate = ServerProxy.getInstance(
-						DrawPaintActivity.this).getDrawablesInBoard(
-						boardDetails.getId());
+				BoardUpdate boardUpdate = ServerProxy.getInstance().
+						getDrawablesInBoard(boardDetails.getId());
 				drawManager.updateBoard(boardUpdate);
 			};
 
@@ -249,7 +247,7 @@ public class DrawPaintActivity extends FragmentActivity {
 		
 		
 		
-		if(boardDetails.getManagerEmail().equals(ServerProxy.getInstance(this).getUserEmail())){
+		if(boardDetails.getManagerEmail().equals(ServerProxy.getInstance().getUserEmail())){
 			menu.findItem(R.id.action_leave_board).setVisible(false);
 		}else{
 			menu.findItem(R.id.action_delete_board).setVisible(false);
@@ -301,8 +299,7 @@ public class DrawPaintActivity extends FragmentActivity {
 		    				getString(R.string.please_wait)) {
 		    			@Override
 		    			public void background() throws Exception {
-		    				ServerProxy.getInstance(
-		    						DrawPaintActivity.this).deleteBoard(
+		    				ServerProxy.getInstance().deleteBoard(
 		    						boardDetails.getId());
 		    			};
 
@@ -337,8 +334,7 @@ public class DrawPaintActivity extends FragmentActivity {
 		    				getString(R.string.please_wait)) {
 		    			@Override
 		    			public void background() throws Exception {
-		    				ServerProxy.getInstance(
-		    						DrawPaintActivity.this).leaveBoard(
+		    				ServerProxy.getInstance().leaveBoard(
 		    						boardDetails.getId());
 		    			};
 
@@ -369,8 +365,7 @@ public class DrawPaintActivity extends FragmentActivity {
 				getString(R.string.please_wait)) {
 			@Override
 			public void background() throws Exception {
-				ServerProxy.getInstance(
-						DrawPaintActivity.this).undoInBoard(
+				ServerProxy.getInstance().undoInBoard(
 						boardDetails.getId());
 			};
 
@@ -387,8 +382,7 @@ public class DrawPaintActivity extends FragmentActivity {
 				getString(R.string.please_wait)) {
 			@Override
 			public void background() throws Exception {
-				ServerProxy.getInstance(
-						DrawPaintActivity.this).redoInBoard(
+				ServerProxy.getInstance().redoInBoard(
 						boardDetails.getId());	
 			};
 

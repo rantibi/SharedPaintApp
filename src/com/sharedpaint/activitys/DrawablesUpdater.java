@@ -38,7 +38,7 @@ public class DrawablesUpdater {
 
 								try {
 									BoardUpdate boardUpdate = ServerProxy
-											.getInstance(drawPaintActivity)
+											.getInstance()
 											.getBoardUpdate(
 													drawPaintActivity
 															.getBoardDetails()
@@ -48,6 +48,7 @@ public class DrawablesUpdater {
 
 								} catch (Exception e1) {
 									// TODO Do somthine with that error
+									e1.printStackTrace();
 									return false;
 								}
 
@@ -67,7 +68,7 @@ public class DrawablesUpdater {
 						}.execute((Void) null);
 
 					try {
-						Thread.sleep(500);
+						Thread.sleep(1500);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

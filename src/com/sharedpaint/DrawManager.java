@@ -31,7 +31,7 @@ public class DrawManager implements Serializable {
 	private transient DrawingOption drawingOption;
 	private int width;
 	private int height;
-	private DrawManagerListener drawManagerListener;
+	private transient DrawManagerListener drawManagerListener;
 	private DrawableFactory drawablesFactory;
 	private long lastUpdate;
 	
@@ -195,7 +195,6 @@ public class DrawManager implements Serializable {
 				drawables.add(drawable);
 				
 			} catch (Exception e) {
-				// TODO handle this exception!!!
 				e.printStackTrace();
 			}
 		}

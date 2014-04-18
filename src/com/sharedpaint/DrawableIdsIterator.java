@@ -16,17 +16,14 @@ public class DrawableIdsIterator implements Iterator<Long>, Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final int MAX_CACHE_IDS = 10;
 	private static final int MIN_CACHE_IDS = 5;
-
-	private transient Activity activity;
 	private BoardDetails boardDetails;
 	private Queue<Long> nextIds;
 
 	protected DrawableIdsIterator(){
 	}
 	
-	public DrawableIdsIterator(Activity activity, BoardDetails boardDetails) {
+	public DrawableIdsIterator(BoardDetails boardDetails) {
 		this.boardDetails = boardDetails;
-		this.setActivity(activity);
 		nextIds = new LinkedList<Long>();
 		new GetNewIdsTask().execute((Void)null);
 	}
@@ -49,20 +46,12 @@ public class DrawableIdsIterator implements Iterator<Long>, Serializable {
 	public void remove() {
 	}
 
-	public Activity getActivity() {
-		return activity;
-	}
-
-	public void setActivity(Activity activity) {
-		this.activity = activity;
-	}
-
 	class GetNewIdsTask extends AsyncTask<Void, Void, Boolean> {
 		
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			try {
-				nextIds.addAll(ServerProxy.getInstance(getActivity()).getNewDrawaleIds(boardDetails.getId(),MAX_CACHE_IDS));
+				nextIds.addAll(ServerProxy.getInstance().getNewDrawaleIds(boardDetails.getId(),MAX_CACHE_IDS));
 			} catch (SharedPaintException e) {
 				return false;
 			}

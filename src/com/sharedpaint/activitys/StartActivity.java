@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.sharedpaint.R;
 import com.sharedpaint.activitys.util.SystemUiHider;
+import com.sharedpaint.connection.AuthenticationException;
 import com.sharedpaint.connection.ConnectionException;
 import com.sharedpaint.connection.ServerProxy;
 
@@ -120,17 +121,19 @@ public class StartActivity extends Activity {
 	 * the user.
 	 */
 	public class CacheLoginTask extends AsyncTask<Void, Void, Boolean> {
-		private ConnectionException exception;
+		private Throwable exception;
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			try {
-				return ServerProxy.getInstance(StartActivity.this)
-						.loginFromCache();
-			} catch (ConnectionException e) {
-				exception = e;
-				return false;
+				return ServerProxy.getInstance().loginFromCache();
+			} catch (ConnectionException e) {				
+			} catch (AuthenticationException e) {				
 			}
+			catch (Throwable e) {
+				exception = e;				
+			}
+			return false;
 		}
 
 		@Override

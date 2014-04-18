@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -182,13 +183,15 @@ public class LoginActivity extends Activity {
 
 		boolean success = true;
 		View focusView = null;
+		
+		
 
 		// Check for a valid password.
 		if (TextUtils.isEmpty(password)) {
 			mPasswordView.setError(getString(R.string.error_field_required));
 			focusView = mPasswordView;
 			success = false;
-		} else if (password.length() < 4) {
+		} else if (password.length() < 5) {
 			mPasswordView.setError(getString(R.string.error_invalid_password));
 			focusView = mPasswordView;
 			success = false;
@@ -199,7 +202,7 @@ public class LoginActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			success = false;
-		} else if (!email.contains("@")) {
+		} else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
 			success = false;
@@ -269,7 +272,7 @@ public class LoginActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			try {
-				return ServerProxy.getInstance(LoginActivity.this).login(email,
+				return ServerProxy.getInstance().login(email,
 						password);
 			} catch (ConnectionException e) {
 				exception = e;
@@ -288,9 +291,7 @@ public class LoginActivity extends Activity {
 				if (exception != null) {
 					Toast.makeText(LoginActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
 				} else {
-					mPasswordView
-							.setError(getString(R.string.error_incorrect_password));
-					mPasswordView.requestFocus();
+					Toast.makeText(LoginActivity.this, getString(R.string.error_incorrect_password), Toast.LENGTH_LONG).show();					
 				}
 			}
 		}
@@ -308,7 +309,7 @@ public class LoginActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			try {
-				ServerProxy.getInstance(LoginActivity.this).register(email,
+				ServerProxy.getInstance().register(email,
 						password);
 			} catch (SharedPaintException e) {
 				exception = e;

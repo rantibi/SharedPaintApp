@@ -45,7 +45,7 @@ public class MembersManageActivity extends Activity {
 
 		new LoadMembersTask().execute((Void) null);
 
-		isManager = ServerProxy.getInstance(MembersManageActivity.this)
+		isManager = ServerProxy.getInstance()
 				.getUserEmail().equals(boardDetails.getManagerEmail());
 
 		if (!isManager) {
@@ -127,7 +127,7 @@ public class MembersManageActivity extends Activity {
 			List<String> boards;
 
 			try {
-				boards = ServerProxy.getInstance(MembersManageActivity.this)
+				boards = ServerProxy.getInstance()
 						.getBoardMembers(boardDetails.getId());
 			} catch (SharedPaintException e) {
 				excepetion = e;
@@ -165,7 +165,7 @@ public class MembersManageActivity extends Activity {
 		protected Boolean doInBackground(String... params) {
 
 			try {
-				ServerProxy.getInstance(MembersManageActivity.this)
+				ServerProxy.getInstance()
 						.removeMemberFromBoard(boardDetails.getId(), params[0]);
 				membersList.remove(params[0]);
 			} catch (SharedPaintException e) {
@@ -193,7 +193,7 @@ public class MembersManageActivity extends Activity {
 		protected Boolean doInBackground(String... params) {
 
 			try {
-				ServerProxy.getInstance(MembersManageActivity.this)
+				ServerProxy.getInstance()
 						.addMemberToBoard(boardDetails.getId(), params[0]);
 				membersList.add(params[0]);
 			} catch (SharedPaintException e) {
