@@ -11,6 +11,9 @@ import android.view.LayoutInflater;
 
 import com.sharedpaint.R;
 
+/*
+ * Create a input text dialog for text draw object
+ */
 public class AddTextDialogFragment extends DialogFragment {
 	public static String OK_LISTENER = "OK_LISTENER";
 	public static String CANCEL_LISTENER = "CANCEL_LISTENER";

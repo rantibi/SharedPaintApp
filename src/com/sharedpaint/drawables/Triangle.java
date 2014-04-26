@@ -3,7 +3,9 @@ package com.sharedpaint.drawables;
 import android.graphics.Canvas;
 import android.graphics.Path;
 
-
+/**
+ * Draw triangle object
+ */
 public class Triangle extends AbsrtractStartEndPositionDrawable{
 	private static final long serialVersionUID = 1L;
 

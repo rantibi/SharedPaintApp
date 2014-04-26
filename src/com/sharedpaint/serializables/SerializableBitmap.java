@@ -9,6 +9,9 @@ import java.io.Serializable;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+/**
+ * Represent a bitmap object for serialization
+ */
 public class SerializableBitmap implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private transient Bitmap bitmap;

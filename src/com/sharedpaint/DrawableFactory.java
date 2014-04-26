@@ -5,6 +5,9 @@ import java.util.Iterator;
 
 import com.sharedpaint.drawables.Drawable;
 
+/*
+ * Create a drawable object by class and set id
+ */
 public class DrawableFactory implements Serializable {
 
 	private static final long serialVersionUID = 1L;

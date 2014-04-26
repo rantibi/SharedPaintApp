@@ -3,6 +3,9 @@ package com.sharedpaint.transfer;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * Represent a drawable object as byte array and some metadata
+ */
 public class DrawableHolder implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private long id;

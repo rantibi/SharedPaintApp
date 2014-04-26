@@ -2,6 +2,9 @@ package com.sharedpaint.drawables;
 
 import java.io.IOException;
 
+/**
+ * Abstract implementation for drawable object - getters/setters implementation
+ */
 public abstract class AbsrtractStartEndPositionDrawable extends
 		AbstractDrawable implements StartEndPositionDrawable {
 

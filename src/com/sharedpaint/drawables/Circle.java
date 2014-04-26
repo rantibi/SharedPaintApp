@@ -4,6 +4,9 @@ package com.sharedpaint.drawables;
 import android.graphics.Canvas;
 
 
+/**
+ * Draw circle object
+ */
 public class Circle extends AbsrtractStartEndPositionDrawable{
 
 	

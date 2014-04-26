@@ -1,15 +1,9 @@
 package com.sharedpaint;
 
 import java.io.IOException;
-import java.io.OptionalDataException;
 import java.io.Serializable;
-import java.util.List;
 import java.util.SortedSet;
-import java.util.Stack;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.LinkedBlockingDeque;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -17,12 +11,14 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 
-import com.sharedpaint.drawables.AbstractDrawable;
 import com.sharedpaint.drawables.Drawable;
 import com.sharedpaint.serializables.SerializablePaint;
 import com.sharedpaint.transfer.BoardUpdate;
 import com.sharedpaint.transfer.DrawableHolder;
 
+/*
+ * This class is used for manage all drawables objects
+ */
 public class DrawManager implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private SortedSet<Drawable> drawables;
@@ -37,7 +33,6 @@ public class DrawManager implements Serializable {
 	
 	private DrawManager() {
 		drawables = new ConcurrentSkipListSet<Drawable>();
-		//redoDrawables = new Stack<Drawable>();
 		createPaint();
 	}
 	
@@ -50,11 +45,6 @@ public class DrawManager implements Serializable {
 	public void setSize(int width, int height) {
 		this.width = width;
 		this.height = height;
-		
-		/*if (backgroundBitmap==null){
-			backgroundBitmap = new BitmapDrawable();  
-			backgroundBitmap.setBitmap(Bitmap.createBitmap(width,height,Config.ARGB_8888));	
-		}*/	
 	}
 
 	private void createPaint() {
@@ -67,7 +57,6 @@ public class DrawManager implements Serializable {
 
 	public void draw(Canvas canvas) {
 		canvas.drawColor(0xFFFFFFFF);
-		//backgroundBitmap.draw(canvas);
 		
 		for (Drawable drawable : drawables) {
 			drawable.draw(canvas);
@@ -83,40 +72,18 @@ public class DrawManager implements Serializable {
 		addDrawable(currentDrawable);
 		drawManagerListener.drawableAccept(currentDrawable);
 		currentDrawable = null;
-		//redoDrawables.clear();
 	}
 
 	public void addDrawable(Drawable drawable) {
 		drawables.add(drawable);
-		
-		/*if (drawables.size() > CommonConfig.getMaxDrawableUndo()){
-			Canvas canvas = new Canvas(backgroundBitmap.getBitmap());
-			drawables.poll().draw(canvas);
-		}*/
 	}
 	
 	public Bitmap getCurrentViewAsBitmap() {
-		//Bitmap bitmap = Bitmap.createBitmap(backgroundBitmap.getBitmap().getWidth(),
-		//		backgroundBitmap.getBitmap().getHeight(),Config.ARGB_8888);
 		Bitmap bitmap = Bitmap.createBitmap(width, height,Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		draw(canvas);
 		return bitmap;
 	}
-/*
-	public void undolLastDrawable() {
-		if (!drawables.isEmpty()) {
-			Drawable last = drawables.last();
-			drawables.remove(last);
-			redoDrawables.push(last);
-		}
-	}*/
-
-	/*public void redolLastDrawable() {
-		if (!redoDrawables.isEmpty()) {
-			drawables.add(redoDrawables.pop());
-		}
-	}*/
 
 	public void setCurrentDrawable(Drawable drawable) {
 		currentDrawable = drawable;
@@ -168,17 +135,8 @@ public class DrawManager implements Serializable {
 	public void updateBoard(BoardUpdate boardUpdate) {
 		setLastUpdate(boardUpdate.getTo().getTime());
 		
-		/*Drawable drawable= new AbstractDrawable() {
-			@Override
-			public void draw(Canvas canvas) {
-			}
-		};*/
-		
 		Drawable drawable = null;
-		//TODO: fix it - bad code!!!!
 		for (Long id : boardUpdate.getRemovedDrawables().keySet()) {
-			//drawable.setId(id);
-			//drawables.remove(drawable);
 			for (Drawable curr_drawable : drawables) {
 				if(curr_drawable.getId() == id){
 					drawable = curr_drawable;

@@ -40,6 +40,9 @@ import com.sharedpaint.transfer.BoardUpdate;
 import com.sharedpaint.views.ColorPickerView;
 import com.sharedpaint.views.ColorPickerView.OnColorChangedListener;
 
+/**
+ * Draw activity - main draw screen
+ */
 public class DrawPaintActivity extends FragmentActivity {
 	public static final String BOARD = "BOARD";
 	private static final String DRAW_MANAGER = "DRAW_MANAGER";

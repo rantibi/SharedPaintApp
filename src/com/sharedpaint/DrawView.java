@@ -7,6 +7,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 
+/*
+ * Draw view
+ */
 public class DrawView extends View  {
 	private DrawManager drawManager;
     

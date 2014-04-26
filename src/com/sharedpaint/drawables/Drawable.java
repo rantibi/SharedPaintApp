@@ -5,6 +5,9 @@ import java.io.Serializable;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+/**
+ * Drawable object interface - all object implement this interface
+ */
 public interface Drawable extends Serializable, Comparable<Drawable>{
 
 	public void draw(Canvas canvas); 

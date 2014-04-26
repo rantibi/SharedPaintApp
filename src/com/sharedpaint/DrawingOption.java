@@ -11,6 +11,11 @@ import com.sharedpaint.operations.FillDrawingOperation;
 import com.sharedpaint.operations.MultiPositionsOperation;
 import com.sharedpaint.operations.StartEndPositionOperation;
 import com.sharedpaint.operations.TextDrawingOperation;
+
+
+/*
+ * Represent a enum of all drawable objects with it's operation class
+ */
 public enum DrawingOption {
 
 	PENCIL(R.drawable.pencil, new MultiPositionsOperation(Pencil.class)),
@@ -21,6 +26,7 @@ public enum DrawingOption {
 	TEXT(R.drawable.text, new TextDrawingOperation()),
 	FILL(R.drawable.fill, new FillDrawingOperation());
 
+	
 	private DrawingOptionOperation drawingOperation;
 	private int iconResource;
 	

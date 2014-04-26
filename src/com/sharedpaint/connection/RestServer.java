@@ -5,31 +5,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Base64;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sharedpaint.IOUtils;
-import com.sharedpaint.R;
-import com.sharedpaint.SettingsActivity;
 import com.sharedpaint.SharedPaintException;
 import com.sharedpaint.drawables.Drawable;
 import com.sharedpaint.transfer.BoardDetails;
@@ -44,6 +30,10 @@ import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.sun.jersey.spi.service.ServiceFinder;
 
+/**
+ * Server connection implementation - Rest connection
+ * User jersey framework for Http transactions
+ */
 public class RestServer implements ServerInterface {
 	
 	private static final String AUTHORIZATION = "Authorization";

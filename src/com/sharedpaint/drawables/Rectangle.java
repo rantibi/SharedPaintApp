@@ -2,7 +2,9 @@ package com.sharedpaint.drawables;
 
 import android.graphics.Canvas;
 
-
+/**
+ * Draw rectangle object
+ */
 public class Rectangle extends AbsrtractStartEndPositionDrawable{
 
 	private static final long serialVersionUID = 1L;

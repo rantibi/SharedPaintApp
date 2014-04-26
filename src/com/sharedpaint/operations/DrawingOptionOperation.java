@@ -5,6 +5,9 @@ import com.sharedpaint.DrawManager;
 import android.view.MotionEvent;
 import android.view.View;
 
+/**
+ * Draw operation
+ */
 public interface DrawingOptionOperation {
 	
 	/**

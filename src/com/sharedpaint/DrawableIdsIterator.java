@@ -5,12 +5,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 
 import com.sharedpaint.connection.ServerProxy;
 import com.sharedpaint.transfer.BoardDetails;
 
+/*
+ * This class retrieve IDs for drawable object from server
+ */
 public class DrawableIdsIterator implements Iterator<Long>, Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -60,7 +62,6 @@ public class DrawableIdsIterator implements Iterator<Long>, Serializable {
 
 		@Override
 		protected void onPostExecute(Boolean result) {
-			//TODO: do somthing if not
 		}
 	}
 }

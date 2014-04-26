@@ -8,6 +8,9 @@ import android.graphics.Paint.Style;
 
 import com.sharedpaint.serializables.SerializablePath;
 
+/**
+ * Draw free pencil object
+ */
 public class Pencil extends AbstractDrawable implements MultiPositionsDrawable {
 
 	private static final long serialVersionUID = 1L;

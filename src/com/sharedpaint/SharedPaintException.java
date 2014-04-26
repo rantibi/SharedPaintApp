@@ -1,9 +1,9 @@
 package com.sharedpaint;
 
+/*
+ * General project's exception
+ */
 public class SharedPaintException extends Exception{
-
-		
-
 	public SharedPaintException() {
 		super();
 	}

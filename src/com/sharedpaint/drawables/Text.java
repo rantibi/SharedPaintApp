@@ -7,6 +7,9 @@ import com.sharedpaint.serializables.SerializablePaint;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+/**
+ * Draw text object
+ */
 public class Text extends AbstractDrawable {
 	private static final long serialVersionUID = 1L;
 	private String text;

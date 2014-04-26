@@ -7,6 +7,9 @@ import android.graphics.Paint.Cap;
 import android.util.AttributeSet;
 import android.view.View;
 
+/*
+ * Stroked view
+ */
 public class StrokeWidthView extends View{
 	float strokeWidth;
 	private Paint paint;

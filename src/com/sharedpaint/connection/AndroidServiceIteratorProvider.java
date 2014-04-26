@@ -8,6 +8,9 @@ import android.util.Log;
 
 import com.sun.jersey.spi.service.ServiceFinder.ServiceIteratorProvider;
 
+/**
+ * Support jersey
+ */
 public class AndroidServiceIteratorProvider<T> extends ServiceIteratorProvider<T> {
 
     private static final String TAG = AndroidServiceIteratorProvider.class.getSimpleName();

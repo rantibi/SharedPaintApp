@@ -1,15 +1,16 @@
 package com.sharedpaint.operations;
 
 import android.graphics.Bitmap;
-import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.sharedpaint.DrawManager;
-import com.sharedpaint.DrawableFactory;
 import com.sharedpaint.drawables.BitmapDrawable;
 import com.sharedpaint.drawables.QueueLinearFloodFiller;
 
+/**
+ * Fill drawing operation - flood filler
+ */
 public class FillDrawingOperation extends AbsrtcatDrawaingOptionOperation{
 
 	public FillDrawingOperation() {

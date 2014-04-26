@@ -2,7 +2,9 @@ package com.sharedpaint.drawables;
 
 import android.graphics.Canvas;
 
-
+/**
+ * Draw line object
+ */
 public class Line extends AbsrtractStartEndPositionDrawable{
 
 	

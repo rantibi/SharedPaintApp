@@ -7,6 +7,9 @@ import com.sharedpaint.drawables.Drawable;
 import com.sharedpaint.transfer.BoardDetails;
 import com.sharedpaint.transfer.BoardUpdate;
 
+/**
+ * This interface represent a communication with server
+ */
 public interface ServerInterface {
 
 	public abstract String getUserEmail();

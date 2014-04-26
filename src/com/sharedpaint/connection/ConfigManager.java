@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+/**
+ * Configuration manager for connection
+ */
 public class ConfigManager {
 	private static ConfigManager instance = new ConfigManager();
 	private Context context;

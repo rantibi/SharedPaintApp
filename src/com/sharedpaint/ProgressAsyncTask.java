@@ -5,6 +5,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+/*
+ * Async task with progress dialog
+ */
 public abstract class ProgressAsyncTask extends AsyncTask<Void, Void, Boolean> {
 	private ProgressDialog dialog;
 	private Context context;
@@ -44,7 +47,6 @@ public abstract class ProgressAsyncTask extends AsyncTask<Void, Void, Boolean> {
 		if (result) {
 			post();
 		}else{
-			// TODO: do something with the exception
 			Toast.makeText(context, exception.getMessage(), Toast.LENGTH_SHORT).show();
 		}
 

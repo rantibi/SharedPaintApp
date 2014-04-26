@@ -9,6 +9,9 @@ import com.sharedpaint.serializables.SerializablePath.PathAction.PathActionType;
 
 import android.graphics.Path;
 
+/**
+ * Represent a path object for serialization
+ */
 public class SerializablePath extends Path implements Serializable {
 
 	private static final long serialVersionUID = -5974912367682897467L;

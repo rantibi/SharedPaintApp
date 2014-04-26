@@ -1,12 +1,7 @@
 package com.sharedpaint.activitys;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,6 +26,9 @@ import com.sharedpaint.SharedPaintException;
 import com.sharedpaint.connection.ServerProxy;
 import com.sharedpaint.transfer.BoardDetails;
 
+/* 
+ * Boards activity - board list and create
+ */
 public class DesktopActivity extends Activity {
 
 	private ListView mainListView;
@@ -132,21 +130,17 @@ public class DesktopActivity extends Activity {
 
 		@Override
 		protected void onCancelled() {
-			// mAuthTask = null;
-			// showProgress(false);
 		}
 	}
 
 	class DrawingsAdpter extends ArrayAdapter<BoardDetails> {
 
-		private int resource;
 		private Object context;
 		private List<BoardDetails> objects;
 
 		public DrawingsAdpter(Context context, int resource,
 				List<BoardDetails> objects) {
 			super(context, resource, objects);
-			this.resource = resource;
 			this.context = context;
 			this.objects = objects;
 
@@ -185,16 +179,6 @@ public class DesktopActivity extends Activity {
 			TextView textViewItem = (TextView) convertView
 					.findViewById(R.id.row_my_drawing_text_board_name);
 			textViewItem.setText(item.getName());
-/*
-			DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-
-			GregorianCalendar calendar = new GregorianCalendar();
-			calendar.setTime(item.getLastUpdate());
-			
-			TextView lastUpdateViewItem = (TextView) convertView
-					.findViewById(R.id.row_my_drawing_text_last_update);
-			lastUpdateViewItem.setText(calendar.toString());
-*/
 			return convertView;
 
 		}

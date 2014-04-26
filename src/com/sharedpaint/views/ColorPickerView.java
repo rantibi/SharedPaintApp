@@ -12,6 +12,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+/**
+ * Color chooser view
+ */
 public class ColorPickerView extends View {
 	private Paint paint;
 	private int currentColor = 0;

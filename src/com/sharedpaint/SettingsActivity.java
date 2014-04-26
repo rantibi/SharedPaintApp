@@ -8,6 +8,9 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 
+/*
+ * Settings activity
+ */
 public class SettingsActivity extends PreferenceActivity {
 	
 	public static final String KEY_PREF_SERVER_ADDRESS = "server_address";

@@ -9,6 +9,9 @@ import java.io.ObjectOutputStream;
 import java.io.OptionalDataException;
 import java.io.Serializable;
 
+/*
+ * IO utilities
+ */
 public class IOUtils {
 
 	public static byte[] ObjectToByteArray(Serializable object) throws IOException{
@@ -27,6 +30,7 @@ public class IOUtils {
 	    }
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static<T> T byteArrayToObject(byte[] data) throws OptionalDataException, ClassNotFoundException, IOException{
 		ByteArrayInputStream in = new ByteArrayInputStream(data);
 	    ObjectInputStream is = new ObjectInputStream(in);

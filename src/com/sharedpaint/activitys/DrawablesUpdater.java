@@ -7,6 +7,9 @@ import android.os.AsyncTask;
 import com.sharedpaint.connection.ServerProxy;
 import com.sharedpaint.transfer.BoardUpdate;
 
+/*
+ * This class retrieve from server a new board object and put them to to DrawManager
+ */
 public class DrawablesUpdater {
 	private boolean keepRunning;
 	private DrawPaintActivity drawPaintActivity;
@@ -47,7 +50,6 @@ public class DrawablesUpdater {
 									drawPaintActivity.getDrawManager().updateBoard(boardUpdate);
 
 								} catch (Exception e1) {
-									// TODO Do somthine with that error
 									e1.printStackTrace();
 									return false;
 								}
@@ -62,8 +64,6 @@ public class DrawablesUpdater {
 											.invalidate();
 
 								}
-
-								// TODO: do something with the exception
 							};
 						}.execute((Void) null);
 

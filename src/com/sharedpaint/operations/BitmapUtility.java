@@ -12,6 +12,9 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 
+/**
+ * Bitmap utility
+ */
 public class BitmapUtility {
 	public static Bitmap loadBitmapFromView(View v) {
 		v.clearFocus();

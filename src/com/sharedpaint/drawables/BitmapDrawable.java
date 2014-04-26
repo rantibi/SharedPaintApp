@@ -4,11 +4,12 @@ import java.io.IOException;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 
 import com.sharedpaint.serializables.SerializableBitmap;
-import com.sharedpaint.serializables.SerializablePaint;
 
+/**
+ * Draw bitmap object
+ */
 public class BitmapDrawable extends AbstractDrawable {
 
 	/** 

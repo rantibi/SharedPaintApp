@@ -6,6 +6,9 @@ import com.sharedpaint.DrawManager;
 import com.sharedpaint.DrawableFactory;
 import com.sharedpaint.drawables.Drawable;
 
+/**
+ * Basic implementation for drawing operation
+ */
 public abstract class AbsrtcatDrawaingOptionOperation implements DrawingOptionOperation{
 
 	protected static final float TOUCH_TOLERANCE = 4;

@@ -2,11 +2,13 @@ package com.sharedpaint.drawables;
 
 import java.io.IOException;
 
-import android.R.drawable;
 import android.graphics.Paint;
 
 import com.sharedpaint.serializables.SerializablePaint;
 
+/**
+ * Abstract implementation for drawable object - getters/setters implementation
+ */
 public abstract class AbstractDrawable implements Drawable {
 	private static final long serialVersionUID = 1L;
 	protected transient Paint paint;

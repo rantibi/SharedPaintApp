@@ -11,6 +11,9 @@ import com.sharedpaint.SharedPaintException;
 import com.sharedpaint.connection.ServerProxy;
 import com.sharedpaint.drawables.Drawable;
 
+/*
+ * This class send async a new drawable object to server
+ */
 public class DrawablesAdder {
 	private ConcurrentLinkedQueue<Drawable> queue;
 	private AsyncTask<Void, Void, Boolean> asyncTask;
@@ -67,7 +70,6 @@ public class DrawablesAdder {
 			}
 
 			protected void onPostExecute(Boolean result) {
-				// TODO: do something with the exception
 			};
 		};
 	

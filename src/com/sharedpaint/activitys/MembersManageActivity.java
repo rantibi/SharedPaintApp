@@ -26,6 +26,9 @@ import com.sharedpaint.SharedPaintException;
 import com.sharedpaint.connection.ServerProxy;
 import com.sharedpaint.transfer.BoardDetails;
 
+/*
+ * Activity for manage board members
+ */
 public class MembersManageActivity extends Activity {
 	private BoardDetails boardDetails;
 	private ListView mainListView;

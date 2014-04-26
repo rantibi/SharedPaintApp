@@ -2,6 +2,9 @@ package com.sharedpaint.connection;
 
 import com.sharedpaint.SharedPaintException;
 
+/**
+ * Connection Exception
+ */
 public class ConnectionException extends SharedPaintException {
 
 	private static final long serialVersionUID = 1L;

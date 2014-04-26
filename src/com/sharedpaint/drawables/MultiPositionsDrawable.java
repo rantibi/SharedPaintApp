@@ -1,5 +1,8 @@
 package com.sharedpaint.drawables;
 
+/**
+ * Interface represent multi position object(example: Pencil)
+ */
 public interface MultiPositionsDrawable extends Drawable {
 	
 	/**
