@@ -77,6 +77,9 @@ public class DesktopActivity extends Activity {
 			Intent intent = new Intent(this, CreateNewBoardActivity.class);
 			startActivity(intent);
 			break;
+		case R.id.action_refresh:
+			new LoadBoardsTask().execute((Void) null);
+			break;
 		case R.id.action_logout:
 			logout();
 		default:
